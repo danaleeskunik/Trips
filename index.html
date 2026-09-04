@@ -26,6 +26,7 @@
     [data-city] { display: block !important; }
     .app-screen { display: block !important; }
     .home-nav { display: none !important; }
+    #home-flight-card { display: block !important; }
   }
 </style>
 
@@ -296,6 +297,10 @@
 
 
 </style>
+<script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.2/dist/kuroshiro.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
 </head>
 <body>
 
@@ -319,7 +324,7 @@
     </div>
 
     
-    <div style="background:#fff;border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:20px 22px;margin-top:14px">
+    <div id="home-flight-card" style="background:#fff;border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:20px 22px;margin-top:14px">
       <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--orange-600);margin-bottom:16px"><span id="cd-label">ספירה לאחור להמראה</span></div>
       <div dir="ltr" style="display:flex;gap:8px;text-align:center;margin-bottom:18px">
         <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-days">--</span></div><div style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">ימים</div></div>
@@ -351,6 +356,7 @@
           <div style="margin-top:6px;font:var(--fw-medium) var(--text-13)/1.4 var(--font-ui);color:var(--ink-7)">נחיתה: ב׳ 12.10 · 02:40</div>
         </div>
       </div>
+      <div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:14px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">Booking ref: 9KP4R2</div>
     </div>
     <div class="home-nav">
   <button type="button" onclick="showScreen('days')" class="home-tile">
@@ -384,6 +390,14 @@
   <button type="button" onclick="showScreen('emergency')" class="home-tile">
     <span class="tile-icon" style="background:#FBEAEC;color:#B23A48"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z"/></svg></span>
     <span class="tile-label">מספרי חירום</span>
+  </button>
+  <button type="button" onclick="showScreen('documents')" class="home-tile">
+    <span class="tile-icon" style="background:#E7ECF3;color:#0F2E52"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14,3 14,8 19,8"/><line x1="12" y1="17" x2="12" y2="11"/><polyline points="9.3,13.5 12,11 14.7,13.5"/></svg></span>
+    <span class="tile-label">מסמכים ואישורים</span>
+  </button>
+  <button type="button" onclick="showScreen('translate')" class="home-tile">
+    <span class="tile-icon" style="background:#FBEAF3;color:#A83E7C"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg></span>
+    <span class="tile-label">מתרגם עברית-יפנית</span>
   </button>
     </div>
     <div style="height:1px"></div>
@@ -464,21 +478,25 @@
       <div style="background:#fff;border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:18px 20px">
         <h3 dir="ltr" style="margin:0 0 8px;font:var(--type-card-title);color:var(--navy-800);text-align:right">1 Hotel Tokyo</h3>
         <p style="margin:0;font:var(--type-body);color:var(--ink-4)">29.9–2.10.2026 (3 לילות)<br><span dir="ltr">Akasaka, Tokyo World Gate Akasaka, Minato-ku, Tokyo</span></p>
+        <div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:8px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">Booking.com #5849213076 · PIN 3382</div>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=1+Hotel+Tokyo+Akasaka" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;min-height:36px;padding:8px 14px;background:var(--blue-100);color:var(--blue-600);border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13)/1 var(--font-ui);text-decoration:none">פתיחה במפות</a>
       </div>
       <div style="background:#fff;border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:18px 20px">
         <h3 dir="ltr" style="margin:0 0 8px;font:var(--type-card-title);color:var(--navy-800);text-align:right">soyo-ne kyoto sanjo</h3>
         <p style="margin:0;font:var(--type-body);color:var(--ink-4)">2.10–8.10.2026 (6 לילות)<br><span dir="ltr">296 Shimohakusancho, Nakagyo-ku, Kyoto (Fuyacho-dori Sanjo)</span></p>
+        <div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:8px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">Booking.com #6127408955</div>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=soyo-ne+kyoto+sanjo" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;min-height:36px;padding:8px 14px;background:var(--blue-100);color:var(--blue-600);border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13)/1 var(--font-ui);text-decoration:none">פתיחה במפות</a>
       </div>
       <div style="background:#fff;border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:18px 20px">
         <h3 dir="ltr" style="margin:0 0 8px;font:var(--type-card-title);color:var(--navy-800);text-align:right">Muji Hotel Ginza</h3>
         <p style="margin:0;font:var(--type-body);color:var(--ink-4)">8.10–11.10.2026 (3 לילות) · <span dir="ltr">Type E</span><br><span dir="ltr">3-3-5 Ginza, Chuo-ku, Tokyo</span></p>
+        <div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:8px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">#2284-7731-0965</div>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=MUJI+HOTEL+GINZA" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;min-height:36px;padding:8px 14px;background:var(--blue-100);color:var(--blue-600);border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13)/1 var(--font-ui);text-decoration:none">פתיחה במפות</a>
       </div>
       <div style="background:#fff;border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:18px 20px">
         <h3 style="margin:0 0 8px;font:var(--type-card-title);color:var(--navy-800)">ביטוח נסיעות רפואי</h3>
         <p style="margin:0;font:var(--type-body);color:var(--ink-4)">Passport Card</p>
+        <div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:8px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">Policy #487213609</div>
       </div>
       <div style="background:#fff;border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:18px 20px">
         <h3 style="margin:0 0 8px;font:var(--type-card-title);color:var(--navy-800)">משדה התעופה למלון</h3>
@@ -917,6 +935,48 @@
     </div>
     </div>
 
+    <div class="app-screen" data-screen="documents" style="display:none">
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);padding:9px 16px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">→ חזרה לתפריט</button></div>
+    <h2 style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מסמכים ואישורים</h2>
+    <div style="background:#fff;border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:20px 22px 22px">
+      <p style="margin:0 0 16px;font:var(--fw-medium) var(--text-14)/var(--lh-body) var(--font-ui);color:var(--ink-6)">כרטיסי כניסה, ויזה, כרטיסי טיסה ועוד — כל קובץ נשמר רק על המכשיר הזה (לא מועלה לשום שרת), כך שאם עוברים מכשיר צריך להעלות מחדש.</p>
+      <input type="file" id="doc-input" accept="image/*,application/pdf" multiple style="display:none" onchange="handleDocUpload(this.files)">
+      <button type="button" onclick="document.getElementById('doc-input').click()" style="display:inline-flex;align-items:center;gap:8px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);padding:12px 20px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer;min-height:44px">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7,8 12,3 17,8"/><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>
+        העלאת קובץ
+      </button>
+      <div id="doc-empty" style="margin-top:18px;font:var(--fw-medium) var(--text-14)/1.5 var(--font-ui);color:var(--ink-8)">עדיין לא הועלו מסמכים.</div>
+      <div id="doc-list" style="margin-top:14px;display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+    </div>
+
+    <div class="app-screen" data-screen="translate" style="display:none">
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);padding:9px 16px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">→ חזרה לתפריט</button></div>
+    <h2 style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מתרגם עברית-יפנית</h2>
+    <div style="background:#fff;border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(15,46,82,.06);padding:20px 22px 22px">
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button type="button" id="tr-dir-he" onclick="setTranslateDirection('he-ja')" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">עברית ← יפנית</button>
+        <button type="button" id="tr-dir-ja" onclick="setTranslateDirection('ja-he')" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">יפנית ← עברית</button>
+      </div>
+      <textarea id="tr-input" placeholder="הקלידו טקסט, או צלמו תפריט למטה" style="width:100%;min-height:80px;border:1px solid var(--border-field);border-radius:10px;padding:12px;font:var(--fw-medium) var(--text-15)/1.5 var(--font-ui);resize:vertical;box-sizing:border-box"></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <button type="button" onclick="translateText()" style="flex:1;min-height:44px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);padding:0 18px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer">תרגום</button>
+        <button type="button" onclick="document.getElementById('tr-photo-input').click()" style="flex:1;min-height:44px;background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);padding:0 18px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          צילום תפריט
+        </button>
+      </div>
+      <input type="file" id="tr-photo-input" accept="image/*" capture="environment" style="display:none" onchange="handleMenuPhoto(this.files[0])">
+      <div id="tr-status" style="margin-top:12px;font:var(--fw-medium) var(--text-13)/1.4 var(--font-ui);color:var(--ink-7)"></div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-hair)">
+        <div style="font:var(--fw-heavy) var(--text-13)/1.2 var(--font-ui);color:var(--ink-7);margin-bottom:6px">תרגום:</div>
+        <div id="tr-output" dir="auto" style="font:var(--fw-bold) var(--text-17)/1.5 var(--font-ui);color:var(--navy-800);min-height:28px"></div>
+        <div id="tr-romaji" dir="ltr" style="margin-top:6px;font:var(--fw-medium) var(--text-14)/1.4 var(--font-num);color:var(--ink-6)"></div>
+      </div>
+      <p style="margin:16px 0 0;font:var(--fw-medium) var(--text-12-5)/1.5 var(--font-ui);color:var(--ink-8)">טיפ: זיהוי טקסט מתמונה עובד הכי טוב על כתב ברור וישר, ודורש חיבור לאינטרנט. אפשר לתקן את הטקסט שזוהה בתיבה למעלה לפני התרגום. לתרגום מדויק יותר אפשר גם להעתיק את הטקסט ל-Google Translate (במסך "אפליקציות שימושיות").</p>
+    </div>
+    </div>
+
     <footer style="text-align:center;margin-top:40px;font:var(--type-meta);color:var(--ink-8)">מסלול מותאם אישית · טוקיו (Tokyo) · קיוטו (Kyoto) · אוסקה (Osaka) · 2026</footer>
 
   </div>
@@ -991,7 +1051,7 @@ function showAllDays(){
   document.querySelector('[data-selected-label]').textContent='בחרו יום כדי לראות את הלו"ז שלו';
 }
 
-var SCREENS=['days','converter','weather','bookings','packing','tips','emergency','apps'];
+var SCREENS=['days','converter','weather','bookings','packing','tips','emergency','apps','documents','translate'];
 function showScreen(name){
   SCREENS.forEach(function(s){
     [].forEach.call(document.querySelectorAll('[data-screen="'+s+'"]'),function(el){
@@ -1000,6 +1060,8 @@ function showScreen(name){
   });
   var nav=document.querySelector('.home-nav');
   if(nav) nav.style.display='none';
+  var flight=document.getElementById('home-flight-card');
+  if(flight) flight.style.display='none';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showHome(){
@@ -1008,6 +1070,8 @@ function showHome(){
   });
   var nav=document.querySelector('.home-nav');
   if(nav) nav.style.display='grid';
+  var flight=document.getElementById('home-flight-card');
+  if(flight) flight.style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1026,6 +1090,206 @@ function resetPack(){
   try{s=JSON.parse(localStorage.getItem(PACK_KEY)||'{}');}catch(e){}
   [].forEach.call(document.querySelectorAll('[data-pack]'),function(el){el.checked=!!s[el.getAttribute('data-pack')];});
 })();
+
+var DOCS_KEY='japan2026.documents';
+function loadDocs(){
+  var arr=[];
+  try{arr=JSON.parse(localStorage.getItem(DOCS_KEY)||'[]');}catch(e){}
+  return arr;
+}
+function saveDocs(arr){
+  try{
+    localStorage.setItem(DOCS_KEY,JSON.stringify(arr));
+    return true;
+  }catch(e){
+    alert('אין מספיק מקום באחסון בדפדפן. נסי למחוק קובץ ישן או להעלות תמונה קלה יותר.');
+    return false;
+  }
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+}
+function formatBytes(n){
+  if(!n) return '';
+  if(n<1024*1024) return Math.round(n/1024)+' KB';
+  return (n/1024/1024).toFixed(1)+' MB';
+}
+function renderDocs(){
+  var arr=loadDocs();
+  var list=document.getElementById('doc-list'), empty=document.getElementById('doc-empty');
+  if(!list) return;
+  list.innerHTML='';
+  empty.style.display = arr.length ? 'none' : 'block';
+  arr.forEach(function(d){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:12px;background:var(--surface-sunken);border:1px solid var(--border-card);border-radius:12px;padding:10px 12px';
+    var thumb;
+    if(d.type && d.type.indexOf('image')===0){
+      thumb='<img src="'+d.dataUrl+'" style="width:44px;height:44px;object-fit:cover;border-radius:8px;flex:0 0 44px">';
+    }else{
+      thumb='<span style="width:44px;height:44px;border-radius:8px;background:var(--blue-100);color:var(--blue-600);display:flex;align-items:center;justify-content:center;flex:0 0 44px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14,3 14,8 19,8"/></svg></span>';
+    }
+    row.innerHTML = thumb +
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font:var(--fw-bold) var(--text-14)/1.3 var(--font-ui);color:var(--ink-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escapeHtml(d.name)+'</div>'+
+        '<div style="font:var(--fw-medium) var(--text-12)/1.3 var(--font-ui);color:var(--ink-7)">'+formatBytes(d.size)+'</div>'+
+      '</div>'+
+      '<button type="button" onclick="openDoc(\''+d.id+'\')" style="background:var(--blue-100);color:var(--blue-600);border:none;border-radius:var(--radius-pill);padding:8px 14px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer;white-space:nowrap">פתיחה</button>'+
+      '<button type="button" onclick="deleteDoc(\''+d.id+'\')" style="background:var(--red-100);color:var(--red-600);border:none;border-radius:var(--radius-pill);padding:8px 14px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer;white-space:nowrap">מחיקה</button>';
+    list.appendChild(row);
+  });
+}
+function openDoc(id){
+  var arr=loadDocs(), d=arr.filter(function(x){return x.id===id;})[0];
+  if(!d) return;
+  var w=window.open();
+  if(w){
+    w.document.write('<title>'+escapeHtml(d.name)+'</title><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh">'+
+      (d.type && d.type.indexOf('image')===0 ? '<img src="'+d.dataUrl+'" style="max-width:100%;max-height:100vh">' : '<iframe src="'+d.dataUrl+'" style="border:0;width:100vw;height:100vh"></iframe>')+
+      '</body>');
+  }
+}
+function deleteDoc(id){
+  var arr=loadDocs().filter(function(x){return x.id!==id;});
+  saveDocs(arr);
+  renderDocs();
+}
+function compressImage(file,cb){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var maxDim=1600, w=img.width, h=img.height;
+      if(w>maxDim||h>maxDim){
+        if(w>h){h=Math.round(h*maxDim/w);w=maxDim;}else{w=Math.round(w*maxDim/h);h=maxDim;}
+      }
+      var canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      cb(canvas.toDataURL('image/jpeg',0.72));
+    };
+    img.onerror=function(){cb(e.target.result);};
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function handleDocUpload(files){
+  if(!files||!files.length) return;
+  var arr=loadDocs();
+  var remaining=files.length;
+  function afterOne(){
+    remaining--;
+    if(remaining===0){
+      if(saveDocs(arr)) renderDocs();
+    }
+  }
+  [].forEach.call(files,function(file){
+    if(file.size>8*1024*1024){
+      alert('הקובץ "'+file.name+'" גדול מדי (מעל 8MB) — לא הועלה.');
+      afterOne();
+      return;
+    }
+    if(file.type && file.type.indexOf('image')===0){
+      compressImage(file,function(dataUrl){
+        arr.push({id:Date.now()+'-'+Math.random().toString(36).slice(2),name:file.name,type:'image/jpeg',size:Math.round(dataUrl.length*0.75),dataUrl:dataUrl});
+        afterOne();
+      });
+    }else{
+      var reader=new FileReader();
+      reader.onload=function(e){
+        arr.push({id:Date.now()+'-'+Math.random().toString(36).slice(2),name:file.name,type:file.type||'application/pdf',size:file.size,dataUrl:e.target.result});
+        afterOne();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+renderDocs();
+
+var translateDirection='he-ja';
+function paintTranslateDirButtons(){
+  var ja=document.getElementById('tr-dir-ja'), he=document.getElementById('tr-dir-he');
+  if(!ja||!he) return;
+  ja.style.background = translateDirection==='ja-he' ? 'var(--blue-500)' : 'var(--surface-muted)';
+  ja.style.color = translateDirection==='ja-he' ? '#fff' : 'var(--navy-800)';
+  he.style.background = translateDirection==='he-ja' ? 'var(--blue-500)' : 'var(--surface-muted)';
+  he.style.color = translateDirection==='he-ja' ? '#fff' : 'var(--navy-800)';
+}
+function setTranslateDirection(dir){
+  translateDirection=dir;
+  paintTranslateDirButtons();
+}
+var kuroshiroInstance=null, kuroshiroInitPromise=null;
+function getKuroshiro(){
+  if(kuroshiroInitPromise) return kuroshiroInitPromise;
+  kuroshiroInitPromise=new Promise(function(resolve,reject){
+    if(typeof Kuroshiro==='undefined'||typeof KuromojiAnalyzer==='undefined'){
+      reject(new Error('kuroshiro not loaded'));
+      return;
+    }
+    var k=new Kuroshiro();
+    k.init(new KuromojiAnalyzer({dictPath:'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/'})).then(function(){
+      kuroshiroInstance=k;
+      resolve(k);
+    }).catch(reject);
+  });
+  return kuroshiroInitPromise;
+}
+function showRomaji(japaneseText){
+  var romajiEl=document.getElementById('tr-romaji');
+  if(!romajiEl) return;
+  if(!japaneseText){romajiEl.textContent='';return;}
+  romajiEl.textContent='טוען הגייה...';
+  getKuroshiro().then(function(k){
+    return k.convert(japaneseText,{to:'romaji',mode:'spaced'});
+  }).then(function(romaji){
+    romajiEl.textContent = romaji ? 'הגייה: '+romaji : '';
+  }).catch(function(){
+    romajiEl.textContent='';
+  });
+}
+function translateText(){
+  var inputEl=document.getElementById('tr-input'), outEl=document.getElementById('tr-output');
+  if(!inputEl||!outEl) return;
+  var text=inputEl.value.trim();
+  var romajiEl=document.getElementById('tr-romaji');
+  if(!text){outEl.textContent='';if(romajiEl)romajiEl.textContent='';return;}
+  outEl.textContent='מתרגם...';
+  if(romajiEl) romajiEl.textContent='';
+  var langpair = translateDirection==='ja-he' ? 'ja|he' : 'he|ja';
+  fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair='+langpair)
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var t = d && d.responseData && d.responseData.translatedText;
+      if(!t || /MYMEMORY WARNING/i.test(t)){
+        outEl.textContent='לא הצלחתי לתרגם כרגע — אפשר לנסות שוב, או להעתיק את הטקסט ל-Google Translate.';
+      }else{
+        outEl.textContent=t;
+        var jpText = translateDirection==='he-ja' ? t : text;
+        showRomaji(jpText);
+      }
+    })
+    .catch(function(){outEl.textContent='שגיאה בתרגום — יש לבדוק חיבור לאינטרנט.';});
+}
+function handleMenuPhoto(file){
+  if(!file) return;
+  var statusEl=document.getElementById('tr-status');
+  setTranslateDirection('ja-he');
+  if(typeof Tesseract==='undefined'){
+    statusEl.textContent='זיהוי תמונה דורש חיבור לאינטרנט בטעינה הראשונה. יש לבדוק חיבור ולנסות שוב.';
+    return;
+  }
+  statusEl.textContent='מזהה טקסט מהתמונה... (יכול לקחת כמה שניות)';
+  Tesseract.recognize(file,'jpn').then(function(result){
+    var text=((result&&result.data&&result.data.text)||'').trim();
+    document.getElementById('tr-input').value=text;
+    statusEl.textContent = text ? '' : 'לא זוהה טקסט בתמונה — אפשר לנסות שוב או להקליד ידנית.';
+    if(text) translateText();
+  }).catch(function(){
+    statusEl.textContent='שגיאה בזיהוי הטקסט. יש לוודא חיבור לאינטרנט ולנסות שוב.';
+  });
+}
+paintTranslateDirButtons();
 </script>
 </body>
 </html>
