@@ -325,8 +325,12 @@
     <div style="position:absolute;inset:0;opacity:.09;background-image:radial-gradient(#fff 1.4px, transparent 1.4px);background-size:24px 24px"></div>
     <div id="hero-watermark" aria-hidden="true" style="position:absolute;bottom:-10px;right:-10px;width:120px;opacity:.16;pointer-events:none"></div>
     <div class="dest-stamp" aria-hidden="true"><span id="dest-stamp-text"></span></div>
+    <button type="button" id="lang-switch" onclick="toggleLanguage()" role="switch" aria-checked="false" aria-label="Switch language / החלפת שפה" data-noprint style="position:absolute;top:20px;right:20px;z-index:2;display:flex;align-items:center;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);border-radius:999px;padding:3px;cursor:pointer;gap:2px">
+      <span id="lang-switch-he" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:rgba(255,255,255,.28)">עב</span>
+      <span id="lang-switch-en" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:transparent">EN</span>
+    </button>
     <div style="position:relative">
-      <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-300)">מסלול מותאם אישית</div>
+      <div data-i18n="eyebrow" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-300)">מסלול מותאם אישית</div>
       <h1 id="hero-title" style="margin:10px 0 8px;font:var(--fw-bold) clamp(26px,6vw,42px)/var(--lh-tight) var(--font-display);letter-spacing:-1px">מסלול טיול יפן</h1>
       <p id="hero-dates" style="margin:0;font:var(--fw-medium) var(--text-17)/var(--lh-snug) var(--font-ui);color:var(--blue-120)">29 בספטמבר – 11 באוקטובר 2026 · 13 ימים</p>
       <p id="hero-cities" style="margin:14px 0 0;font:var(--fw-bold) var(--text-14)/1.4 var(--font-ui);color:var(--blue-300)">טוקיו · קיוטו · אוסקה</p>
@@ -336,22 +340,22 @@
   <div style="padding:0 clamp(14px,4vw,24px)">
 
     <div data-noprint style="display:flex;justify-content:flex-end;margin:18px 0 0">
-      <button type="button" onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;background:var(--surface-card);color:var(--navy-800);border:2px solid var(--border-field);border-radius:var(--radius-pill);padding:9px 16px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">הדפסה / PDF</button>
+      <button type="button" onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;background:var(--surface-card);color:var(--navy-800);border:2px solid var(--border-field);border-radius:var(--radius-pill);padding:9px 16px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer" data-i18n="print">הדפסה / PDF</button>
     </div>
 
     
     <div id="home-flight-card" style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px;margin-top:14px">
       <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--orange-600);margin-bottom:16px"><span id="cd-label">ספירה לאחור להמראה</span></div>
       <div dir="ltr" style="display:flex;gap:8px;text-align:center;margin-bottom:18px">
-        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-days">--</span></div><div style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">ימים</div></div>
-        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-hrs">--</span></div><div style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">שעות</div></div>
-        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-min">--</span></div><div style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">דק׳</div></div>
-        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-sec">--</span></div><div style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">שנ׳</div></div>
+        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-days">--</span></div><div data-i18n="cdDays" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">ימים</div></div>
+        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-hrs">--</span></div><div data-i18n="cdHours" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">שעות</div></div>
+        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-min">--</span></div><div data-i18n="cdMin" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">דק׳</div></div>
+        <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-sec">--</span></div><div data-i18n="cdSec" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">שנ׳</div></div>
       </div>
       <div style="border-top:1px solid var(--border-hair);padding-top:16px;display:grid;gap:16px">
         <div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px">
-            <span style="font:var(--fw-bold) var(--text-13)/1.2 var(--font-ui);color:var(--ink-6)">הלוך</span>
+            <span data-i18n="flOut" style="font:var(--fw-bold) var(--text-13)/1.2 var(--font-ui);color:var(--ink-6)">הלוך</span>
             <span id="fl-out-datetime" style="font:var(--fw-black) var(--text-14-5)/1.2 var(--font-num);color:var(--ink-1)">ב׳ 28.9 · 19:45</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -362,7 +366,7 @@
         </div>
         <div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px">
-            <span style="font:var(--fw-bold) var(--text-13)/1.2 var(--font-ui);color:var(--ink-6)">חזור</span>
+            <span data-i18n="flBack" style="font:var(--fw-bold) var(--text-13)/1.2 var(--font-ui);color:var(--ink-6)">חזור</span>
             <span id="fl-back-datetime" style="font:var(--fw-black) var(--text-14-5)/1.2 var(--font-num);color:var(--ink-1)">א׳ 11.10 · 19:55</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -377,43 +381,43 @@
     <div class="home-nav">
   <button type="button" onclick="showScreen('days')" class="home-tile" style="background:var(--tile-1)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span>
-    <span class="tile-label" style="color:#fff">יום אחר יום</span>
+    <span class="tile-label" data-i18n="tileDays" style="color:#fff">יום אחר יום</span>
   </button>
   <button type="button" onclick="showScreen('converter')" class="home-tile" style="background:var(--tile-2)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="17,3 21,7 17,11"/><line x1="21" y1="7" x2="7" y2="7"/><polyline points="7,13 3,17 7,21"/><line x1="3" y1="17" x2="17" y2="17"/></svg></span>
-    <span class="tile-label" style="color:#fff">מחשבון המרה</span>
+    <span class="tile-label" data-i18n="tileConverter" style="color:#fff">מחשבון המרה</span>
   </button>
   <button type="button" onclick="showScreen('weather')" class="home-tile" style="background:var(--tile-3)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M4 18h11a3.5 3.5 0 0 0 0-7 5 5 0 0 0-9.5-1.8"/></svg></span>
-    <span class="tile-label" style="color:#fff">תחזית מזג אוויר</span>
+    <span class="tile-label" data-i18n="tileWeather" style="color:#fff">תחזית מזג אוויר</span>
   </button>
   <button type="button" onclick="showScreen('bookings')" class="home-tile" style="background:var(--tile-4)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg></span>
-    <span class="tile-label" style="color:#fff">פרטי הזמנות</span>
+    <span class="tile-label" data-i18n="tileBookings" style="color:#fff">פרטי הזמנות</span>
   </button>
   <button type="button" onclick="showScreen('packing')" class="home-tile" style="background:var(--tile-1)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><polyline points="7.5,12 10,14.5 16,8.5"/></svg></span>
-    <span class="tile-label" style="color:#fff">רשימת אריזה</span>
+    <span class="tile-label" data-i18n="tilePacking" style="color:#fff">רשימת אריזה</span>
   </button>
   <button type="button" onclick="showScreen('tips')" class="home-tile" style="background:var(--tile-2)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9v.2h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3Z"/></svg></span>
-    <span class="tile-label" style="color:#fff">טיפים מעשיים</span>
+    <span class="tile-label" data-i18n="tileTips" style="color:#fff">טיפים מעשיים</span>
   </button>
   <button type="button" onclick="showScreen('apps')" class="home-tile" style="background:var(--tile-3)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>
-    <span class="tile-label" style="color:#fff">אפליקציות שימושיות</span>
+    <span class="tile-label" data-i18n="tileApps" style="color:#fff">אפליקציות שימושיות</span>
   </button>
   <button type="button" onclick="showScreen('emergency')" class="home-tile" style="background:var(--tile-4)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z"/></svg></span>
-    <span class="tile-label" style="color:#fff">מספרי חירום</span>
+    <span class="tile-label" data-i18n="tileEmergency" style="color:#fff">מספרי חירום</span>
   </button>
   <button type="button" onclick="showScreen('documents')" class="home-tile" style="background:var(--tile-1)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14,3 14,8 19,8"/><line x1="12" y1="17" x2="12" y2="11"/><polyline points="9.3,13.5 12,11 14.7,13.5"/></svg></span>
-    <span class="tile-label" style="color:#fff">מסמכים ואישורים</span>
+    <span class="tile-label" data-i18n="tileDocuments" style="color:#fff">מסמכים ואישורים</span>
   </button>
   <button type="button" onclick="showScreen('translate')" class="home-tile" style="background:var(--tile-2)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg></span>
-    <span id="translate-tile-label" class="tile-label" style="color:#fff">מתרגם עברית-יפנית</span>
+    <span id="translate-tile-label" class="tile-label" data-i18n="tileTranslate" style="color:#fff">מתרגם עברית-יפנית</span>
   </button>
     </div>
     <div class="home-illustration" data-noprint id="home-illustration"></div>
@@ -421,13 +425,13 @@
     
 
     <div id="days-pillbar" class="app-screen" data-screen="days" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="30" r="16" fill="var(--navy-800)" opacity=".8"/>
         <path d="M20 68 Q120 18 200 58 T380 38" fill="none" stroke="#6E8FD9" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 11"/>
         <circle cx="20" cy="68" r="6" fill="#6E8FD9"/><circle cx="200" cy="58" r="6" fill="#6E8FD9"/><circle cx="380" cy="38" r="6" fill="#6E8FD9"/></svg></div>
     
     <div data-noprint style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px 16px;margin-top:16px">
-      <h2 style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">יום אחר יום</h2>
+      <h2 data-i18n="titleDays" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">יום אחר יום</h2>
       <div dir="ltr" style="display:flex;gap:9px;overflow-x:auto;padding:2px 2px 12px">
         <button data-pill="1" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ג׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">29</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
         <button data-pill="2" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ד׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">30</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
@@ -443,22 +447,22 @@
         <button data-pill="12" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ש׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">10</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
         <button data-pill="13" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">א׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">11</span><span style="width:6px;height:6px;border-radius:50%;background:#B87FC2"></span></button>
       </div>
-      <div data-selected-label style="font:var(--fw-bold) var(--text-15)/1.5 var(--font-ui);color:var(--ink-4)">בחרו יום כדי לראות את הלו"ז שלו</div>
+      <div data-selected-label data-i18n="daysSelectPrompt" style="font:var(--fw-bold) var(--text-15)/1.5 var(--font-ui);color:var(--ink-4)">בחרו יום כדי לראות את הלו"ז שלו</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-hair)">
-        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#6E8FD9"></span>טוקיו</span>
-        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#D4526A"></span>קיוטו</span>
-        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#4FA37A"></span>אוסקה</span>
-        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#B87FC2"></span>יום נסיעה</span>
+        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#6E8FD9"></span><span data-i18n="cityTokyo">טוקיו</span></span>
+        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#D4526A"></span><span data-i18n="cityKyoto">קיוטו</span></span>
+        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#4FA37A"></span><span data-i18n="cityOsaka">אוסקה</span></span>
+        <span style="display:flex;align-items:center;gap:6px;font:var(--type-meta);color:var(--ink-6)"><span style="width:9px;height:9px;border-radius:50%;background:#B87FC2"></span><span data-i18n="cityTravelDay">יום נסיעה</span></span>
       </div>
       <div data-back-wrap style="display:none;justify-content:center;margin-top:16px">
-        <button type="button" onclick="showAllDays()" style="display:inline-flex;align-items:center;gap:8px;background:var(--surface-muted);color:var(--ink-5);border:none;border-radius:var(--radius-pill);padding:11px 18px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">הצג את כל הימים</button>
+        <button type="button" onclick="showAllDays()" data-i18n="daysShowAll" style="display:inline-flex;align-items:center;gap:8px;background:var(--surface-muted);color:var(--ink-5);border:none;border-radius:var(--radius-pill);padding:11px 18px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">הצג את כל הימים</button>
       </div>
     </div>
     </div>
 
     
     <div class="app-screen" data-screen="converter" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><circle cx="150" cy="47" r="27" fill="#4FB8AE" opacity=".8"/>
         <circle cx="196" cy="57" r="27" fill="#4FB8AE"/>
         <text id="fx-illust-symbol" x="150" y="55" text-anchor="middle" font-family="Miriam Libre,serif" font-weight="700" font-size="24" fill="#fff">¥</text>
@@ -468,11 +472,11 @@
     
     <div data-noprint style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px;margin-top:16px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px">
-        <h2 style="margin:0;font:var(--type-section-title);color:var(--navy-800)">מחשבון המרה</h2>
-        <span style="font:var(--fw-medium) var(--text-12-5)/1.3 var(--font-num);color:var(--ink-7)"><span id="fx-ratedate">שער משוער</span></span>
+        <h2 data-i18n="titleConverter" style="margin:0;font:var(--type-section-title);color:var(--navy-800)">מחשבון המרה</h2>
+        <span style="font:var(--fw-medium) var(--text-12-5)/1.3 var(--font-num);color:var(--ink-7)"><span id="fx-ratedate" data-i18n="converterRateEstimate">שער משוער</span></span>
       </div>
       <p style="margin:0 0 18px;font:var(--fw-heavy) var(--text-14)/1.4 var(--font-num);color:var(--orange-600)"><span id="fx-summary">&nbsp;</span></p>
-      <label for="fx-yen" style="display:block;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--ink-6);margin-bottom:8px">סכום ב-<span id="fx-label-symbol">¥</span></label>
+      <label for="fx-yen" style="display:block;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--ink-6);margin-bottom:8px"><span data-i18n="converterAmountLabel">סכום ב-</span><span id="fx-label-symbol">¥</span></label>
       <div style="display:flex;align-items:center;gap:10px;background:var(--surface-sunken);border:2px solid var(--border-field);border-radius:12px;padding:10px 16px;margin-bottom:14px">
         <span id="fx-input-symbol" style="font:var(--fw-bold) var(--text-22)/1 var(--font-num);color:var(--ink-7)">¥</span>
         <input id="fx-yen" type="number" min="0" inputmode="decimal" value="1000" oninput="recalc()" style="flex:1;min-width:0;border:none;background:transparent;font:var(--fw-black) var(--text-24)/1.3 var(--font-num);color:var(--navy-800);outline:none;height:34px">
@@ -499,12 +503,12 @@
     
 
     <div class="app-screen" data-screen="bookings" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><rect x="140" y="30" width="90" height="50" rx="10" fill="#4FA37A"/>
         <rect x="168" y="18" width="34" height="18" rx="6" fill="none" stroke="#4FA37A" stroke-width="5"/>
         <rect x="150" y="48" width="70" height="6" rx="3" fill="#fff" opacity=".55"/></svg></div>
     
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">פרטי הזמנות</h2>
+    <h2 data-i18n="titleBookings" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">פרטי הזמנות</h2>
 
     <div id="bookings-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
       <div style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:14px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:18px 20px">
@@ -538,7 +542,7 @@
     </div>
 
     <div id="days-content" class="app-screen" data-screen="days" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-top:20px;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-top:20px;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <h2 data-city id="tokyo1" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px;display:flex;align-items:center;gap:10px">טוקיו — חלק 1
       <span style="display:inline-flex;align-items:center;background:var(--navy-800);color:#fff;font:var(--fw-heavy) var(--text-12)/1 var(--font-ui);padding:5px 11px;border-radius:var(--radius-pill);letter-spacing:.2px;white-space:nowrap">3 לילות</span>
     </h2>
@@ -791,20 +795,20 @@
 
     
     <div class="app-screen" data-screen="packing" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path d="M160 78 v-30 a30 30 0 0 1 60 0 v30 z" fill="#B87FC2"/>
         <rect x="150" y="76" width="80" height="10" rx="5" fill="#B87FC2"/>
         <path d="M178 48 a12 12 0 0 1 24 0" fill="none" stroke="#fff" stroke-width="4" opacity=".7"/></svg></div>
     
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">רשימת אריזה</h2>
+    <h2 data-i18n="titlePacking" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">רשימת אריזה</h2>
     <div style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:16px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
-        <p style="margin:0;font:var(--type-body);color:var(--ink-6)">הסימונים נשמרים במכשיר שלכם — אפשר לסמן בהדרגה ולחזור מתי שרוצים.</p>
-        <span data-noprint><button type="button" onclick="resetPack()" style="background:var(--surface-muted);color:var(--ink-5);border:none;border-radius:var(--radius-pill);padding:11px 18px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">איפוס הסימונים</button></span>
+        <p data-i18n="packingDesc" style="margin:0;font:var(--type-body);color:var(--ink-6)">הסימונים נשמרים במכשיר שלכם — אפשר לסמן בהדרגה ולחזור מתי שרוצים.</p>
+        <span data-noprint><button type="button" onclick="resetPack()" data-i18n="packingReset" style="background:var(--surface-muted);color:var(--ink-5);border:none;border-radius:var(--radius-pill);padding:11px 18px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">איפוס הסימונים</button></span>
       </div>
       <div id="packing-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:14px">
         <div>
-          <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">מסמכים וכספים</div>
+          <div data-i18n="packingCatDocs" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">מסמכים וכספים</div>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="doc1" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">דרכונים (בתוקף 6 חודשים)</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="doc2" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">אישורי טיסה מודפסים</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="doc3" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">אישורי המלונות</span></label>
@@ -814,7 +818,7 @@
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="doc7" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">כרטיסי teamLab ופיקסאר</span></label>
         </div>
         <div>
-          <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">אלקטרוניקה</div>
+          <div data-i18n="packingCatElec" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">אלקטרוניקה</div>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="el1" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">מתאם חשמל יפני (Type A)</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="el2" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">מטען נייד (פאוור בנק)</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="el3" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">eSIM או כרטיס SIM ליפן</span></label>
@@ -823,7 +827,7 @@
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="el6" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">אוזניות</span></label>
         </div>
         <div>
-          <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">בגדים וציוד</div>
+          <div data-i18n="packingCatClothes" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px;border-bottom:1px solid var(--border-rule)">בגדים וציוד</div>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="cl1" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">בגדים קלים ומאווררים</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="cl2" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">שכבה קלה לערבים</span></label>
           <label style="display:flex;align-items:center;gap:11px;min-height:44px;padding:6px 0;cursor:pointer"><input type="checkbox" data-pack="cl3" onchange="savePack()"><span style="font:var(--fw-semibold) var(--text-16)/1.5 var(--font-ui);color:var(--ink-2)">מטרייה קומפקטית</span></label>
@@ -835,10 +839,10 @@
         </div>
       </div>
       <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border-rule)">
-        <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px">הוסיפו פריט משלכם</div>
+        <div data-i18n="packingAddHeading" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-600);padding-bottom:10px">הוסיפו פריט משלכם</div>
         <div data-noprint style="display:flex;gap:8px;margin-bottom:12px">
-          <input id="pack-custom-input" type="text" placeholder="למשל: מטען לשואב אבק נייד" onkeydown="if(event.key==='Enter'){addCustomPackItem();}" style="flex:1;min-width:0;background:var(--surface-sunken);border:2px solid var(--border-field);border-radius:10px;padding:10px 14px;font:var(--fw-medium) var(--text-15)/1.3 var(--font-ui);color:var(--ink-2);outline:none">
-          <button type="button" onclick="addCustomPackItem()" style="background:var(--blue-500);color:#fff;border:none;border-radius:10px;padding:0 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;min-height:44px;white-space:nowrap">הוספה</button>
+          <input id="pack-custom-input" type="text" data-i18n-placeholder="packingAddPlaceholder" placeholder="למשל: מטען לשואב אבק נייד" onkeydown="if(event.key==='Enter'){addCustomPackItem();}" style="flex:1;min-width:0;background:var(--surface-sunken);border:2px solid var(--border-field);border-radius:10px;padding:10px 14px;font:var(--fw-medium) var(--text-15)/1.3 var(--font-ui);color:var(--ink-2);outline:none">
+          <button type="button" onclick="addCustomPackItem()" data-i18n="packingAddButton" style="background:var(--blue-500);color:#fff;border:none;border-radius:10px;padding:0 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;min-height:44px;white-space:nowrap">הוספה</button>
         </div>
         <div id="pack-custom-list"></div>
       </div>
@@ -847,12 +851,12 @@
 
 
     <div class="app-screen" data-screen="tips" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path d="M150 70 A70 70 0 0 1 250 70 Z" fill="#C02436"/>
         <path d="M167 70 A53 53 0 0 1 233 70" fill="none" stroke="#fff" stroke-width="2" opacity=".5"/>
         <circle cx="200" cy="72" r="7" fill="#fff" opacity=".8"/></svg></div>
     
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">טיפים מעשיים</h2>
+    <h2 data-i18n="titleTips" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">טיפים מעשיים</h2>
     <div id="tips-list" style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:16px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:6px 22px 14px">
       <div style="padding:16px 0;border-bottom:1px solid var(--border-hair)">
         <h4 style="margin:0 0 5px;font:var(--type-card-title);color:var(--navy-800)">כרטיס IC (סוייקה/פאסמו)</h4>
@@ -884,7 +888,7 @@
       </div>
     </div>
 
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">תחבורה ציבורית — איך להתארגן</h2>
+    <h2 data-i18n="titleTransit" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">תחבורה ציבורית — איך להתארגן</h2>
     <div id="transit-list" style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:16px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:6px 22px 14px">
       <div style="padding:16px 0;border-bottom:1px solid var(--border-hair)">
         <h4 style="margin:0 0 5px;font:var(--type-card-title);color:var(--navy-800)">כרטיס IC — Suica/Pasmo</h4>
@@ -919,11 +923,11 @@
 
     
     <div class="app-screen" data-screen="emergency" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path d="M200 18 l34 12 v26 c0 22 -16 34 -34 40 c-18 -6 -34 -18 -34 -40 v-26 z" fill="#D4526A"/>
         <path d="M188 48 h24 M200 36 v24" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg></div>
     
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">מספרים לשעת חירום</h2>
+    <h2 data-i18n="titleEmergency" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">מספרים לשעת חירום</h2>
     <div id="emergency-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px">
       <a href="tel:110" style="background:var(--surface-card);border:1px solid var(--red-border);border-radius:14px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:18px 20px;text-decoration:none;display:block">
         <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--red-600)">משטרה</div>
@@ -952,22 +956,22 @@
       </div>
     </div>
     <div style="display:flex;gap:11px;padding:13px 15px;border-radius:10px;background:var(--blue-100);border-inline-start:4px solid var(--blue-500);margin-top:14px">
-      <div style="font:var(--fw-heavy) var(--text-14)/1.5 var(--font-ui);color:var(--blue-600);white-space:nowrap">להשלים</div>
-      <div style="font:var(--fw-semibold) var(--text-15-5)/var(--lh-snug) var(--font-ui);color:var(--blue-600)">הוסיפו כאן את טלפוני שלושת המלונות מתוך אישורי ההזמנה — זה המספר שתחפשו אם מזוודה או מפתח נשארים מאחור.</div>
+      <div data-i18n="emergencyTodoLabel" style="font:var(--fw-heavy) var(--text-14)/1.5 var(--font-ui);color:var(--blue-600);white-space:nowrap">להשלים</div>
+      <div data-i18n="emergencyTodoText" style="font:var(--fw-semibold) var(--text-15-5)/var(--lh-snug) var(--font-ui);color:var(--blue-600)">הוסיפו כאן את טלפוני שלושת המלונות מתוך אישורי ההזמנה — זה המספר שתחפשו אם מזוודה או מפתח נשארים מאחור.</div>
     </div>
     </div>
     
 
 
     <div class="app-screen" data-screen="weather" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><circle cx="130" cy="38" r="22" fill="#F0637E"/>
         <ellipse cx="230" cy="55" rx="46" ry="20" fill="#6FA8D9"/>
         <ellipse cx="190" cy="48" rx="30" ry="16" fill="#A9C9E8"/></svg></div>
     
-      <h2 style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800)">תחזית מזג אוויר</h2>
+      <h2 data-i18n="titleWeather" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800)">תחזית מזג אוויר</h2>
       <div style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:16px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px">
-        <p style="margin:0 0 16px;font:var(--type-body);color:var(--ink-6)">תחזיות מזג אוויר אמינות רק כ-10-14 ימים מראש — כדאי לבדוק שוב סמוך ליציאה.</p>
+        <p data-i18n="weatherDesc" style="margin:0 0 16px;font:var(--type-body);color:var(--ink-6)">תחזיות מזג אוויר אמינות רק כ-10-14 ימים מראש — כדאי לבדוק שוב סמוך ליציאה.</p>
         <div id="weather-links" style="display:flex;flex-direction:column;gap:10px">
           <a href="https://www.google.com/search?q=weather+in+tokyo" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;min-height:44px;background:var(--surface-muted);border-radius:12px;padding:12px 16px;text-decoration:none;font:var(--fw-bold) var(--text-15)/1.3 var(--font-ui);color:var(--navy-800)">תחזית לטוקיו (Tokyo)</a>
           <a href="https://www.google.com/search?q=weather+in+kyoto" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;min-height:44px;background:var(--surface-muted);border-radius:12px;padding:12px 16px;text-decoration:none;font:var(--fw-bold) var(--text-15)/1.3 var(--font-ui);color:var(--navy-800)">תחזית לקיוטו (Kyoto)</a>
@@ -976,13 +980,13 @@
       </div>
     </div>
     <div class="app-screen" data-screen="apps" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><rect x="150" y="24" width="26" height="26" rx="7" fill="#4E8C52"/>
         <rect x="186" y="24" width="26" height="26" rx="7" fill="#4E8C52" opacity=".7"/>
         <rect x="150" y="60" width="26" height="26" rx="7" fill="#4E8C52" opacity=".7"/>
         <rect x="186" y="60" width="26" height="26" rx="7" fill="#4E8C52"/></svg></div>
     
-    <h2 style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">אפליקציות ולינקים שימושיים</h2>
+    <h2 data-i18n="titleApps" style="margin:40px 0 16px;font:var(--type-section-title);color:var(--navy-800);border-bottom:1px solid var(--border-rule);padding-bottom:10px">אפליקציות ולינקים שימושיים</h2>
     <div id="apps-links" style="display:flex;flex-wrap:wrap;gap:10px">
       <a href="https://www.eki-net.com/en/jreast-train-reservation/Top/Index" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:44px;background:var(--surface-card);border:1px solid var(--border-card);border-radius:10px;padding:11px 15px;text-decoration:none;font:var(--fw-bold) var(--text-14-5)/1.3 var(--font-ui);color:var(--ink-2);box-shadow:0 2px 8px rgba(214,41,63,.06)">JR East — הזמנת N'EX</a>
       <a href="https://smart-ex.jp/en/lp/app/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:44px;background:var(--surface-card);border:1px solid var(--border-card);border-radius:10px;padding:11px 15px;text-decoration:none;font:var(--fw-bold) var(--text-14-5)/1.3 var(--font-ui);color:var(--ink-2);box-shadow:0 2px 8px rgba(214,41,63,.06)">Smart EX — שינקנסן טוקיו-קיוטו-אוסקה</a>
@@ -997,52 +1001,52 @@
     </div>
 
     <div class="app-screen" data-screen="documents" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path d="M140 34 h40 l10 12 h70 v40 h-120 z" fill="#EADFCB"/>
         <circle cx="255" cy="55" r="20" fill="none" stroke="var(--navy-800)" stroke-width="2.5"/>
         <circle cx="255" cy="55" r="14" fill="none" stroke="var(--navy-800)" stroke-width="1.5"/>
         <text id="doc-stamp-text" x="255" y="60" text-anchor="middle" font-family="Miriam Libre,serif" font-weight="700" font-size="12" fill="var(--navy-800)"></text></svg></div>
     
-    <h2 style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מסמכים ואישורים</h2>
+    <h2 data-i18n="titleDocuments" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מסמכים ואישורים</h2>
     <div style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px 22px">
-      <p style="margin:0 0 16px;font:var(--fw-medium) var(--text-14)/var(--lh-body) var(--font-ui);color:var(--ink-6)">כרטיסי כניסה, ויזה, כרטיסי טיסה ועוד — כל קובץ נשמר רק על המכשיר הזה (לא מועלה לשום שרת), כך שאם עוברים מכשיר צריך להעלות מחדש.</p>
+      <p data-i18n="docsDesc" style="margin:0 0 16px;font:var(--fw-medium) var(--text-14)/var(--lh-body) var(--font-ui);color:var(--ink-6)">כרטיסי כניסה, ויזה, כרטיסי טיסה ועוד — כל קובץ נשמר רק על המכשיר הזה (לא מועלה לשום שרת), כך שאם עוברים מכשיר צריך להעלות מחדש.</p>
       <input type="file" id="doc-input" accept="image/*,application/pdf" multiple style="display:none" onchange="handleDocUpload(this.files)">
       <button type="button" onclick="document.getElementById('doc-input').click()" style="display:inline-flex;align-items:center;gap:8px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);padding:12px 20px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer;min-height:44px">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7,8 12,3 17,8"/><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>
-        העלאת קובץ
+        <span data-i18n="docsUpload">העלאת קובץ</span>
       </button>
-      <div id="doc-empty" style="margin-top:18px;font:var(--fw-medium) var(--text-14)/1.5 var(--font-ui);color:var(--ink-8)">עדיין לא הועלו מסמכים.</div>
+      <div id="doc-empty" data-i18n="docsEmpty" style="margin-top:18px;font:var(--fw-medium) var(--text-14)/1.5 var(--font-ui);color:var(--ink-8)">עדיין לא הועלו מסמכים.</div>
       <div id="doc-list" style="margin-top:14px;display:flex;flex-direction:column;gap:10px"></div>
     </div>
     </div>
 
     <div class="app-screen" data-screen="translate" style="display:none">
-      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
+      <div style="display:flex;justify-content:flex-start;margin-bottom:14px"><button type="button" onclick="showHome()" data-i18n="back" style="display:inline-flex;align-items:center;gap:6px;background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:10px 18px;font:var(--fw-bold) var(--text-14)/1 var(--font-ui);cursor:pointer;box-shadow:var(--shadow-card)">→ חזרה לתפריט</button></div>
     <div class="screen-illustration" data-noprint><svg viewBox="0 0 400 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><path d="M140 30 h80 a10 10 0 0 1 10 10 v20 a10 10 0 0 1 -10 10 h-50 l-16 14 v-14 h-14 a10 10 0 0 1 -10 -10 v-20 a10 10 0 0 1 10 -10 z" fill="#E0699A"/>
         <path d="M220 46 h70 a10 10 0 0 1 10 10 v16 a10 10 0 0 1 -10 10 h-14 v12 l-15 -12 h-41 a10 10 0 0 1 -10 -10 v-16 a10 10 0 0 1 10 -10 z" fill="#F0A8C4"/></svg></div>
     
-    <h2 id="translate-title" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מתרגם עברית-יפנית</h2>
+    <h2 id="translate-title" data-i18n="titleTranslate" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">מתרגם עברית-יפנית</h2>
     <div style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px 22px">
       <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button type="button" id="tr-dir-he" onclick="setTranslateDirection('he-ja')" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">עברית ← יפנית</button>
-        <button type="button" id="tr-dir-ja" onclick="setTranslateDirection('ja-he')" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">יפנית ← עברית</button>
+        <button type="button" id="tr-dir-he" onclick="setTranslateDirection('he-ja')" data-i18n="translateDirHeJa" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">עברית ← יפנית</button>
+        <button type="button" id="tr-dir-ja" onclick="setTranslateDirection('ja-he')" data-i18n="translateDirJaHe" style="flex:1;padding:10px;border-radius:var(--radius-pill);border:none;cursor:pointer;font:var(--fw-bold) var(--text-14)/1 var(--font-ui)">יפנית ← עברית</button>
       </div>
-      <textarea id="tr-input" placeholder="הקלידו טקסט, או צלמו תפריט למטה" style="width:100%;min-height:80px;border:1px solid var(--border-field);border-radius:10px;padding:12px;font:var(--fw-medium) var(--text-15)/1.5 var(--font-ui);resize:vertical;box-sizing:border-box"></textarea>
+      <textarea id="tr-input" data-i18n-placeholder="translateInputPlaceholder" placeholder="הקלידו טקסט, או צלמו תפריט למטה" style="width:100%;min-height:80px;border:1px solid var(--border-field);border-radius:10px;padding:12px;font:var(--fw-medium) var(--text-15)/1.5 var(--font-ui);resize:vertical;box-sizing:border-box"></textarea>
       <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
-        <button type="button" onclick="translateText()" style="flex:1;min-height:44px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);padding:0 18px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer">תרגום</button>
+        <button type="button" onclick="translateText()" data-i18n="translateButton" style="flex:1;min-height:44px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);padding:0 18px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer">תרגום</button>
         <button type="button" onclick="document.getElementById('tr-photo-input').click()" style="flex:1;min-height:44px;background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);padding:0 18px;font:var(--fw-bold) var(--text-14-5)/1 var(--font-ui);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          צילום תפריט
+          <span data-i18n="translatePhotoButton">צילום תפריט</span>
         </button>
       </div>
       <input type="file" id="tr-photo-input" accept="image/*" capture="environment" style="display:none" onchange="handleMenuPhoto(this.files[0])">
       <div id="tr-status" style="margin-top:12px;font:var(--fw-medium) var(--text-13)/1.4 var(--font-ui);color:var(--ink-7)"></div>
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-hair)">
-        <div style="font:var(--fw-heavy) var(--text-13)/1.2 var(--font-ui);color:var(--ink-7);margin-bottom:6px">תרגום:</div>
+        <div data-i18n="translateOutputLabel" style="font:var(--fw-heavy) var(--text-13)/1.2 var(--font-ui);color:var(--ink-7);margin-bottom:6px">תרגום:</div>
         <div id="tr-output" dir="auto" style="font:var(--fw-bold) var(--text-17)/1.5 var(--font-ui);color:var(--navy-800);min-height:28px"></div>
         <div id="tr-romaji" dir="ltr" style="margin-top:6px;font:var(--fw-medium) var(--text-14)/1.4 var(--font-num);color:var(--ink-6)"></div>
       </div>
-      <p style="margin:16px 0 0;font:var(--fw-medium) var(--text-12-5)/1.5 var(--font-ui);color:var(--ink-8)">טיפ: זיהוי טקסט מתמונה עובד הכי טוב על כתב ברור וישר, ודורש חיבור לאינטרנט. אפשר לתקן את הטקסט שזוהה בתיבה למעלה לפני התרגום. לתרגום מדויק יותר אפשר גם להעתיק את הטקסט ל-Google Translate (במסך "אפליקציות שימושיות").</p>
+      <p data-i18n="translateTip" style="margin:16px 0 0;font:var(--fw-medium) var(--text-12-5)/1.5 var(--font-ui);color:var(--ink-8)">טיפ: זיהוי טקסט מתמונה עובד הכי טוב על כתב ברור וישר, ודורש חיבור לאינטרנט. אפשר לתקן את הטקסט שזוהה בתיבה למעלה לפני התרגום. לתרגום מדויק יותר אפשר גם להעתיק את הטקסט ל-Google Translate (במסך "אפליקציות שימושיות").</p>
     </div>
     </div>
 
@@ -1227,6 +1231,45 @@ var CURRENT_DESTINATION = (function(){
 applyDestinationTheme(CURRENT_DESTINATION);
 if(CURRENT_DESTINATION !== 'japan') applyTripDemo(CURRENT_DESTINATION);
 
+var UI_STRINGS = {"back": {"he": "→ חזרה לתפריט", "en": "← Back to Menu"}, "eyebrow": {"he": "מסלול מותאם אישית", "en": "Personalized Itinerary"}, "print": {"he": "הדפסה / PDF", "en": "Print / PDF"}, "cdDays": {"he": "ימים", "en": "Days"}, "cdHours": {"he": "שעות", "en": "Hours"}, "cdMin": {"he": "דק׳", "en": "Min"}, "cdSec": {"he": "שנ׳", "en": "Sec"}, "flOut": {"he": "הלוך", "en": "Outbound"}, "flBack": {"he": "חזור", "en": "Return"}, "tileDays": {"he": "יום אחר יום", "en": "Day by Day"}, "titleDays": {"he": "יום אחר יום", "en": "Day by Day"}, "tileConverter": {"he": "מחשבון המרה", "en": "Currency Converter"}, "titleConverter": {"he": "מחשבון המרה", "en": "Currency Converter"}, "tileWeather": {"he": "תחזית מזג אוויר", "en": "Weather Forecast"}, "titleWeather": {"he": "תחזית מזג אוויר", "en": "Weather Forecast"}, "tileBookings": {"he": "פרטי הזמנות", "en": "Bookings"}, "titleBookings": {"he": "פרטי הזמנות", "en": "Bookings"}, "tilePacking": {"he": "רשימת אריזה", "en": "Packing List"}, "titlePacking": {"he": "רשימת אריזה", "en": "Packing List"}, "tileTips": {"he": "טיפים מעשיים", "en": "Practical Tips"}, "titleTips": {"he": "טיפים מעשיים", "en": "Practical Tips"}, "tileApps": {"he": "אפליקציות שימושיות", "en": "Useful Apps"}, "titleApps": {"he": "אפליקציות ולינקים שימושיים", "en": "Useful Apps & Links"}, "tileEmergency": {"he": "מספרי חירום", "en": "Emergency Numbers"}, "titleEmergency": {"he": "מספרים לשעת חירום", "en": "Emergency Numbers"}, "tileDocuments": {"he": "מסמכים ואישורים", "en": "Documents"}, "titleDocuments": {"he": "מסמכים ואישורים", "en": "Documents"}, "tileTranslate": {"he": "מתרגם עברית-יפנית", "en": "Hebrew-Japanese Translator"}, "titleTranslate": {"he": "מתרגם עברית-יפנית", "en": "Hebrew-Japanese Translator"}, "titleTransit": {"he": "תחבורה ציבורית — איך להתארגן", "en": "Getting Around — Public Transit"}, "daysSelectPrompt": {"he": "בחרו יום כדי לראות את הלו\"ז שלו", "en": "Select a day to see its schedule"}, "daysShowAll": {"he": "הצג את כל הימים", "en": "Show All Days"}, "cityTokyo": {"he": "טוקיו", "en": "Tokyo"}, "cityKyoto": {"he": "קיוטו", "en": "Kyoto"}, "cityOsaka": {"he": "אוסקה", "en": "Osaka"}, "cityTravelDay": {"he": "יום נסיעה", "en": "Travel Day"}, "converterAmountLabel": {"he": "סכום ב-", "en": "Amount in "}, "packingDesc": {"he": "הסימונים נשמרים במכשיר שלכם — אפשר לסמן בהדרגה ולחזור מתי שרוצים.", "en": "Your checkmarks are saved on this device — check things off gradually and come back anytime."}, "packingReset": {"he": "איפוס הסימונים", "en": "Reset Checkmarks"}, "packingCatDocs": {"he": "מסמכים וכספים", "en": "Documents & Money"}, "packingCatElec": {"he": "אלקטרוניקה", "en": "Electronics"}, "packingCatClothes": {"he": "בגדים וציוד", "en": "Clothes & Gear"}, "packingAddHeading": {"he": "הוסיפו פריט משלכם", "en": "Add your own item"}, "packingAddPlaceholder": {"he": "למשל: מטען לשואב אבק נייד", "en": "e.g. charger for a handheld vacuum"}, "packingAddButton": {"he": "הוספה", "en": "Add"}, "docsDesc": {"he": "כרטיסי כניסה, ויזה, כרטיסי טיסה ועוד — כל קובץ נשמר רק על המכשיר הזה (לא מועלה לשום שרת), כך שאם עוברים מכשיר צריך להעלות מחדש.", "en": "Entry tickets, visas, boarding passes and more — every file is saved only on this device (never uploaded to a server), so you'll need to re-upload on a different device."}, "docsUpload": {"he": "העלאת קובץ", "en": "Upload File"}, "docsEmpty": {"he": "עדיין לא הועלו מסמכים.", "en": "No documents uploaded yet."}, "weatherDesc": {"he": "תחזיות מזג אוויר אמינות רק כ-10-14 ימים מראש — כדאי לבדוק שוב סמוך ליציאה.", "en": "Weather forecasts are only reliable about 10-14 days ahead — worth checking again closer to departure."}, "emergencyTodoLabel": {"he": "להשלים", "en": "To Do"}, "emergencyTodoText": {"he": "הוסיפו כאן את טלפוני שלושת המלונות מתוך אישורי ההזמנה — זה המספר שתחפשו אם מזוודה או מפתח נשארים מאחור.", "en": "Add the three hotels' phone numbers here from the booking confirmations — that's the number to call if a bag or key gets left behind."}, "translateDirHeJa": {"he": "עברית ← יפנית", "en": "Hebrew → Japanese"}, "translateDirJaHe": {"he": "יפנית ← עברית", "en": "Japanese → Hebrew"}, "translateInputPlaceholder": {"he": "הקלידו טקסט, או צלמו תפריט למטה", "en": "Type text, or photograph a menu below"}, "translateButton": {"he": "תרגום", "en": "Translate"}, "translatePhotoButton": {"he": "צילום תפריט", "en": "Photo of Menu"}, "translateOutputLabel": {"he": "תרגום:", "en": "Translation:"}, "translateTip": {"he": "טיפ: זיהוי טקסט מתמונה עובד הכי טוב על כתב ברור וישר, ודורש חיבור לאינטרנט. אפשר לתקן את הטקסט שזוהה בתיבה למעלה לפני התרגום. לתרגום מדויק יותר אפשר גם להעתיק את הטקסט ל-Google Translate (במסך \"אפליקציות שימושיות\").", "en": "Tip: photo text recognition works best on clear, straight writing and requires an internet connection. You can fix the recognized text in the box above before translating. For a more accurate translation you can also copy the text to Google Translate (on the \"Useful Apps\" screen)."}, "converterRateEstimate": {"he": "שער משוער", "en": "Estimated rate"}, "converterExampleLabel": {"he": "לדוגמה: ", "en": "e.g. "}, "converterRateLabel": {"he": "שער · ", "en": "Rate · "}, "cdLabelDefault": {"he": "ספירה לאחור להמראה", "en": "Countdown to Departure"}, "cdLabelOutbound": {"he": "ספירה לאחור להמראה (הלוך)", "en": "Countdown to Departure (Outbound)"}, "cdLabelReturn": {"he": "ספירה לאחור להמראה (חזור)", "en": "Countdown to Departure (Return)"}, "cdLabelDone": {"he": "מקווים שנהניתם בטיול", "en": "Hope you enjoyed the trip!"}};
+
+function applyLanguage(lang){
+  if(lang !== 'he' && lang !== 'en') lang = 'he';
+  CURRENT_LANG = lang;
+  try{ localStorage.setItem('kunikTrips.lang', lang); }catch(e){}
+  var isEn = lang === 'en';
+  [].forEach.call(document.querySelectorAll('[data-i18n]'), function(el){
+    var entry = UI_STRINGS[el.getAttribute('data-i18n')];
+    if(!entry) return;
+    el.textContent = entry[lang];
+    el.dir = isEn ? 'ltr' : 'rtl';
+  });
+  [].forEach.call(document.querySelectorAll('[data-i18n-placeholder]'), function(el){
+    var entry = UI_STRINGS[el.getAttribute('data-i18n-placeholder')];
+    if(!entry) return;
+    el.setAttribute('placeholder', entry[lang]);
+  });
+  var sw = document.getElementById('lang-switch');
+  if(sw) sw.setAttribute('aria-checked', String(isEn));
+  var swLabelHe = document.getElementById('lang-switch-he');
+  var swLabelEn = document.getElementById('lang-switch-en');
+  if(swLabelHe) swLabelHe.style.background = isEn ? 'transparent' : 'rgba(255,255,255,.28)';
+  if(swLabelEn) swLabelEn.style.background = isEn ? 'rgba(255,255,255,.28)' : 'transparent';
+  if(typeof recalc === 'function' && typeof FX_CURRENCY !== 'undefined') recalc();
+}
+function toggleLanguage(){
+  applyLanguage(CURRENT_LANG === 'he' ? 'en' : 'he');
+}
+var CURRENT_LANG = (function(){
+  try{
+    var saved = localStorage.getItem('kunikTrips.lang');
+    if(saved === 'he' || saved === 'en') return saved;
+  }catch(e){}
+  return 'he';
+})();
+applyLanguage(CURRENT_LANG);
+
+
 /* iOS home-screen apps sometimes reopen at the last scroll position instead of the top — force top on every load, including bfcache restores (pageshow). */
 window.scrollTo(0,0);
 window.addEventListener('pageshow', function(){ window.scrollTo(0,0); });
@@ -1235,9 +1278,9 @@ window.addEventListener('pageshow', function(){ window.scrollTo(0,0); });
   var out=new Date('2026-09-28T19:45:00+03:00'), back=new Date('2026-10-11T19:55:00+09:00');
   function pad(n){return n<10?'0'+n:''+n;}
   function tick(){
-    var now=new Date(), target=null, label='מקווים שנהניתם בטיול';
-    if(now<out){target=out;label='ספירה לאחור להמראה (הלוך)';}
-    else if(now<back){target=back;label='ספירה לאחור להמראה (חזור)';}
+    var now=new Date(), target=null, label=UI_STRINGS.cdLabelDone[CURRENT_LANG];
+    if(now<out){target=out;label=UI_STRINGS.cdLabelOutbound[CURRENT_LANG];}
+    else if(now<back){target=back;label=UI_STRINGS.cdLabelReturn[CURRENT_LANG];}
     document.getElementById('cd-label').textContent=label;
     var ids=['cd-days','cd-hrs','cd-min','cd-sec'];
     if(!target){ids.forEach(function(i){document.getElementById(i).textContent='—';});return;}
@@ -1261,7 +1304,7 @@ function recalc(){
   if(isNaN(y)){document.getElementById('fx-usd').textContent='—';document.getElementById('fx-ils').textContent='—';document.getElementById('fx-example').textContent='';return;}
   document.getElementById('fx-usd').textContent=fmtUsd(y*rateUSD);
   document.getElementById('fx-ils').textContent=fmtIls(y*rateILS);
-  document.getElementById('fx-example').textContent='לדוגמה: '+sym+y.toLocaleString('en-US')+' ≈ '+fmtUsd(y*rateUSD)+' ≈ '+fmtIls(y*rateILS);
+  document.getElementById('fx-example').textContent=UI_STRINGS.converterExampleLabel[CURRENT_LANG]+sym+y.toLocaleString('en-US')+' ≈ '+fmtUsd(y*rateUSD)+' ≈ '+fmtIls(y*rateILS);
 }
 function setPreset(btn){document.getElementById('fx-yen').value=btn.getAttribute('data-amount');recalc();}
 function applyFxCurrency(){
@@ -1279,7 +1322,7 @@ applyFxCurrency();
 recalc();
 fetch('https://api.frankfurter.dev/v1/latest?from='+FX_CURRENCY.code+'&to=USD,ILS').then(function(r){return r.json();}).then(function(d){
   rateUSD=d.rates.USD; rateILS=d.rates.ILS;
-  document.getElementById('fx-ratedate').textContent='שער · '+d.date; recalc();
+  document.getElementById('fx-ratedate').textContent=UI_STRINGS.converterRateLabel[CURRENT_LANG]+d.date; recalc();
 }).catch(function(){});
 
 var CITY={'1':'#6E8FD9','2':'#6E8FD9','3':'#6E8FD9','4':'#B87FC2','5':'#D4526A','6':'#D4526A','7':'#D4526A','8':'#D4526A','9':'#4FA37A','10':'#B87FC2','11':'#6E8FD9','12':'#6E8FD9','13':'#B87FC2'};
@@ -1306,7 +1349,7 @@ function showAllDays(){
   [].forEach.call(document.querySelectorAll('[data-daycard]'),function(c){c.style.display='block';});
   paintPills(null);
   document.querySelector('[data-back-wrap]').style.display='none';
-  document.querySelector('[data-selected-label]').textContent='בחרו יום כדי לראות את הלו"ז שלו';
+  document.querySelector('[data-selected-label]').textContent=UI_STRINGS.daysSelectPrompt[CURRENT_LANG];
 }
 
 var SCREENS=['days','converter','weather','bookings','packing','tips','emergency','apps','documents','translate'];
