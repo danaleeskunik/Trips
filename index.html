@@ -345,7 +345,7 @@
 
     
     <div id="home-flight-card" style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px;margin-top:14px">
-      <div style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--orange-600);margin-bottom:16px"><span id="cd-label">ספירה לאחור להמראה</span></div>
+      <div id="cd-label-wrap" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--orange-600);margin-bottom:16px"><span id="cd-label">ספירה לאחור להמראה</span></div>
       <div dir="ltr" style="display:flex;gap:8px;text-align:center;margin-bottom:18px">
         <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-days">--</span></div><div data-i18n="cdDays" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">ימים</div></div>
         <div style="flex:1"><div style="font:var(--fw-black) clamp(26px,7vw,38px)/1 var(--font-num);letter-spacing:var(--track-stat);color:var(--navy-800)"><span id="cd-hrs">--</span></div><div data-i18n="cdHours" style="font:var(--fw-bold) var(--text-12)/1.4 var(--font-ui);color:var(--ink-7);margin-top:6px">שעות</div></div>
@@ -1249,6 +1249,8 @@ function applyLanguage(lang){
     if(!entry) return;
     el.setAttribute('placeholder', entry[lang]);
   });
+  var cdWrap = document.getElementById('cd-label-wrap');
+  if(cdWrap) cdWrap.style.textAlign = isEn ? 'left' : 'right';
   var sw = document.getElementById('lang-switch');
   if(sw) sw.setAttribute('aria-checked', String(isEn));
   var swLabelHe = document.getElementById('lang-switch-he');
