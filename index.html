@@ -1224,7 +1224,7 @@ function applyTripDemo(key){
   setText2('translate-title', t.translateLabel);
   var setHtml2 = function(id, val){ var el = document.getElementById(id); if(el && val) el.innerHTML = val; };
   setHtml2('hero-booking-ref', t.heroBookingRef);
-  applyLanguage(CURRENT_LANG);
+  if(typeof UI_STRINGS !== 'undefined' && typeof CURRENT_LANG !== 'undefined' && typeof applyLanguage === 'function') applyLanguage(CURRENT_LANG);
 }
 
 var CURRENT_DESTINATION = (function(){
