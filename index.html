@@ -1639,81 +1639,116 @@ function handleDocUpload(files){
 }
 renderDocs();
 
-var DAY_NOTES = {};
-function dayNoteUIHtml(n, savedText){
-  var hasNote = savedText && savedText.trim().length > 0;
-  return '<div data-noprint data-daynote-wrap="'+n+'" style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--border-hair)">' +
-    '<div data-daynote-view="'+n+'" style="'+(hasNote?'':'display:none')+'">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
-        '<div style="font:var(--fw-bold) var(--text-13)/1.4 var(--font-ui);color:var(--blue-600)">📝 עדכון אישי</div>' +
-        '<button type="button" onclick="openDayNoteEditor(\''+n+'\')" style="background:none;border:none;color:var(--blue-600);cursor:pointer;font:var(--fw-bold) var(--text-12)/1 var(--font-ui);text-decoration:underline">עריכה</button>' +
-      '</div>' +
-      '<div data-daynote-text="'+n+'" style="font:var(--fw-medium) var(--text-14-5)/1.5 var(--font-ui);color:var(--ink-2);white-space:pre-wrap;margin-top:4px">'+escapeHtml(savedText||'')+'</div>' +
-    '</div>' +
-    '<button type="button" data-daynote-addbtn="'+n+'" onclick="openDayNoteEditor(\''+n+'\')" style="'+(hasNote?'display:none;':'')+'background:var(--surface-muted);color:var(--ink-5);border:none;border-radius:var(--radius-pill);padding:8px 14px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer">✏️ הוספת עדכון אישי ליום זה</button>' +
-    '<div data-daynote-edit="'+n+'" style="display:none;margin-top:8px">' +
-      '<textarea data-daynote-input="'+n+'" style="width:100%;min-height:70px;border:1px solid var(--border-field);border-radius:10px;padding:10px;font:var(--fw-medium) var(--text-14)/1.5 var(--font-ui);resize:vertical;box-sizing:border-box">'+escapeHtml(savedText||'')+'</textarea>' +
-      '<div style="display:flex;gap:8px;margin-top:8px">' +
-        '<button type="button" onclick="saveDayNote(\''+n+'\')" style="background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:8px 16px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer">שמירה</button>' +
-        '<button type="button" onclick="cancelDayNote(\''+n+'\')" style="background:var(--surface-muted);color:var(--ink-6);border:none;border-radius:var(--radius-pill);padding:8px 16px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer">ביטול</button>' +
-      '</div>' +
-    '</div>' +
-  '</div>';
-}
-function renderAllDayNotes(){
+var DAY_EDITS = {};
+var ICON_EDIT_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+var ICON_DELETE_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+var DAYROW_SELECTOR = 'div[style="display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--border-hair)"]';
+function rowKey(dayNum, idx){ return dayNum + ':' + idx; }
+function renderAllDayRowControls(){
   [].forEach.call(document.querySelectorAll('[data-daycard]'), function(card){
-    var n = card.getAttribute('data-daycard');
-    if(card.querySelector('[data-daynote-wrap]')) return;
-    var wrap = document.createElement('div');
-    wrap.innerHTML = dayNoteUIHtml(n, DAY_NOTES[n]);
-    card.appendChild(wrap.firstChild);
+    var dayNum = card.getAttribute('data-daycard');
+    var rows = card.querySelectorAll(DAYROW_SELECTOR);
+    [].forEach.call(rows, function(row, idx){
+      if(row.getAttribute('data-dayrow-wired')) return;
+      row.setAttribute('data-dayrow-wired','1');
+      row.setAttribute('data-dayrow', rowKey(dayNum, idx));
+      var textDiv = row.children[1];
+      if(!textDiv) return;
+      if(!row.hasAttribute('data-original-text')) row.setAttribute('data-original-text', textDiv.textContent);
+      var controls = document.createElement('div');
+      controls.setAttribute('data-noprint','');
+      controls.style.cssText='flex:0 0 auto;display:flex;gap:2px;align-self:flex-start;margin-inline-start:4px';
+      controls.innerHTML =
+        '<button type="button" onclick="editDayRow(this)" style="background:none;border:none;color:var(--ink-7);cursor:pointer;padding:5px;border-radius:6px" aria-label="עריכה">'+ICON_EDIT_SVG+'</button>' +
+        '<button type="button" onclick="deleteDayRow(this)" style="background:none;border:none;color:var(--ink-7);cursor:pointer;padding:5px;border-radius:6px" aria-label="מחיקה">'+ICON_DELETE_SVG+'</button>';
+      row.appendChild(controls);
+    });
   });
 }
-function openDayNoteEditor(n){
-  var view = document.querySelector('[data-daynote-view="'+n+'"]');
-  var editBox = document.querySelector('[data-daynote-edit="'+n+'"]');
-  var addBtn = document.querySelector('[data-daynote-addbtn="'+n+'"]');
-  if(view) view.style.display='none';
-  if(addBtn) addBtn.style.display='none';
-  if(editBox) editBox.style.display='block';
+function editDayRow(btn){
+  var row = btn.closest('[data-dayrow]');
+  if(!row) return;
+  var textDiv = row.children[1];
+  if(textDiv.querySelector('textarea')) return;
+  var current = textDiv.textContent;
+  textDiv.setAttribute('data-prev-html', textDiv.innerHTML);
+  textDiv.innerHTML = '<textarea style="width:100%;min-height:60px;border:1px solid var(--border-field);border-radius:8px;padding:8px;font:var(--fw-medium) var(--text-15-5)/1.5 var(--font-ui);resize:vertical;box-sizing:border-box">'+escapeHtml(current)+'</textarea>' +
+    '<div style="display:flex;gap:8px;margin-top:6px">' +
+      '<button type="button" onclick="saveDayRowEdit(this)" style="background:var(--navy-800);color:#fff;border:none;border-radius:var(--radius-pill);padding:6px 14px;font:var(--fw-bold) var(--text-12)/1 var(--font-ui);cursor:pointer">שמירה</button>' +
+      '<button type="button" onclick="cancelDayRowEdit(this)" style="background:var(--surface-muted);color:var(--ink-6);border:none;border-radius:var(--radius-pill);padding:6px 14px;font:var(--fw-bold) var(--text-12)/1 var(--font-ui);cursor:pointer">ביטול</button>' +
+    '</div>';
 }
-function cancelDayNote(n){
-  var editBox = document.querySelector('[data-daynote-edit="'+n+'"]');
-  var view = document.querySelector('[data-daynote-view="'+n+'"]');
-  var addBtn = document.querySelector('[data-daynote-addbtn="'+n+'"]');
-  var input = document.querySelector('[data-daynote-input="'+n+'"]');
-  var saved = DAY_NOTES[n] || '';
-  if(input) input.value = saved;
-  if(editBox) editBox.style.display='none';
-  if(saved){ if(view) view.style.display='block'; } else { if(addBtn) addBtn.style.display=''; }
+function saveDayRowEdit(btn){
+  var row = btn.closest('[data-dayrow]');
+  var key = row.getAttribute('data-dayrow');
+  var textDiv = row.children[1];
+  var textarea = textDiv.querySelector('textarea');
+  var text = textarea.value.trim();
+  textDiv.removeAttribute('data-prev-html');
+  textDiv.textContent = text;
+  var entry = DAY_EDITS[key] || {};
+  entry.text = text; entry.deleted = false;
+  DAY_EDITS[key] = entry;
+  persistDayEdits();
 }
-function saveDayNote(n){
-  var input = document.querySelector('[data-daynote-input="'+n+'"]');
-  var text = input ? input.value.trim() : '';
-  DAY_NOTES[n] = text;
-  var textEl = document.querySelector('[data-daynote-text="'+n+'"]');
-  if(textEl) textEl.textContent = text;
-  var view = document.querySelector('[data-daynote-view="'+n+'"]');
-  var editBox = document.querySelector('[data-daynote-edit="'+n+'"]');
-  var addBtn = document.querySelector('[data-daynote-addbtn="'+n+'"]');
-  if(editBox) editBox.style.display='none';
-  if(text){ if(view) view.style.display='block'; if(addBtn) addBtn.style.display='none'; }
-  else { if(view) view.style.display='none'; if(addBtn) addBtn.style.display=''; }
-  try{ localStorage.setItem('kunikTrips.dayNotes.'+tripKey(), JSON.stringify(DAY_NOTES)); }catch(e){}
-  sbUpsertTripData({day_edits: DAY_NOTES});
+function cancelDayRowEdit(btn){
+  var row = btn.closest('[data-dayrow]');
+  var textDiv = row.children[1];
+  var prev = textDiv.getAttribute('data-prev-html');
+  if(prev!=null){ textDiv.innerHTML = prev; textDiv.removeAttribute('data-prev-html'); }
 }
-function applyDayNotesData(){
-  for(var n in DAY_NOTES){
-    var text = DAY_NOTES[n];
-    var textEl = document.querySelector('[data-daynote-text="'+n+'"]');
-    var view = document.querySelector('[data-daynote-view="'+n+'"]');
-    var addBtn = document.querySelector('[data-daynote-addbtn="'+n+'"]');
-    var input = document.querySelector('[data-daynote-input="'+n+'"]');
-    if(textEl) textEl.textContent = text;
-    if(input) input.value = text;
-    if(text){ if(view) view.style.display='block'; if(addBtn) addBtn.style.display='none'; }
+function applyRowDeletedState(row, deleted){
+  var label = row.children[0], textDiv = row.children[1], controls = row.querySelector('[data-noprint]');
+  if(deleted){
+    row.setAttribute('data-deleted','1');
+    if(label) label.style.display='none';
+    if(textDiv) textDiv.innerHTML = '<span style="color:var(--ink-8);font-style:italic">השורה הוסתרה</span> · <button type="button" onclick="restoreDayRow(this)" style="background:none;border:none;color:var(--blue-600);cursor:pointer;text-decoration:underline;font:var(--fw-bold) var(--text-13)/1 var(--font-ui)">שחזור</button>';
+    if(controls) controls.style.display='none';
+  }else{
+    row.removeAttribute('data-deleted');
+    if(label) label.style.display='';
+    var saved = DAY_EDITS[row.getAttribute('data-dayrow')];
+    var orig = row.getAttribute('data-original-text');
+    if(textDiv) textDiv.textContent = (saved && saved.text!=null) ? saved.text : (orig||'');
+    if(controls) controls.style.display='';
   }
 }
+function deleteDayRow(btn){
+  var row = btn.closest('[data-dayrow]');
+  var key = row.getAttribute('data-dayrow');
+  var entry = DAY_EDITS[key] || {};
+  entry.deleted = true;
+  DAY_EDITS[key] = entry;
+  applyRowDeletedState(row, true);
+  persistDayEdits();
+}
+function restoreDayRow(btn){
+  var row = btn.closest('[data-dayrow]');
+  var key = row.getAttribute('data-dayrow');
+  var entry = DAY_EDITS[key] || {};
+  entry.deleted = false;
+  DAY_EDITS[key] = entry;
+  applyRowDeletedState(row, false);
+  persistDayEdits();
+}
+function persistDayEdits(){
+  try{ localStorage.setItem('kunikTrips.dayEdits.'+tripKey(), JSON.stringify(DAY_EDITS)); }catch(e){}
+  sbUpsertTripData({day_edits: DAY_EDITS});
+}
+function applyDayEditsData(){
+  for(var key in DAY_EDITS){
+    var row = document.querySelector('[data-dayrow="'+key+'"]');
+    if(!row) continue;
+    var entry = DAY_EDITS[key];
+    if(entry.deleted){
+      applyRowDeletedState(row, true);
+    }else if(entry.text!=null){
+      var textDiv = row.children[1];
+      if(textDiv) textDiv.textContent = entry.text;
+    }
+  }
+}
+
 function loadDocsFromSupabase(){
   fetch(SUPABASE_URL + '/rest/v1/trip_documents?trip_key=eq.' + encodeURIComponent(tripKey()) + '&select=*&order=uploaded_at.asc', {headers: sbHeaders()})
     .then(function(r){ return r.ok ? r.json() : []; })
@@ -1728,7 +1763,7 @@ function loadDocsFromSupabase(){
     .catch(function(){});
 }
 function hydrateFromSupabase(){
-  renderAllDayNotes();
+  renderAllDayRowControls();
   sbGetTripData().then(function(row){
     if(!row) return;
     if(row.packing_checked){
@@ -1740,9 +1775,9 @@ function hydrateFromSupabase(){
       renderCustomPack();
     }
     if(row.day_edits){
-      DAY_NOTES = row.day_edits;
-      applyDayNotesData();
-      try{ localStorage.setItem('kunikTrips.dayNotes.'+tripKey(), JSON.stringify(DAY_NOTES)); }catch(e){}
+      DAY_EDITS = row.day_edits;
+      applyDayEditsData();
+      try{ localStorage.setItem('kunikTrips.dayEdits.'+tripKey(), JSON.stringify(DAY_EDITS)); }catch(e){}
     }
   });
   loadDocsFromSupabase();
