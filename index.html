@@ -329,6 +329,9 @@
       <span id="lang-switch-he" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:rgba(255,255,255,.28)">עב</span>
       <span id="lang-switch-en" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:transparent">EN</span>
     </button>
+    <button type="button" onclick="window.print()" data-i18n-aria="print" aria-label="הדפסה / PDF" data-noprint style="position:absolute;top:64px;right:20px;z-index:2;display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);border-radius:50%;cursor:pointer;color:#fff">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
     <div style="position:relative">
       <div data-i18n="eyebrow" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-300)">מסלול מותאם אישית</div>
       <h1 id="hero-title" data-i18n="japanHeroTitle" style="margin:10px 0 8px;font:var(--fw-bold) clamp(26px,6vw,42px)/var(--lh-tight) var(--font-display);letter-spacing:-1px">מסלול טיול יפן</h1>
@@ -339,10 +342,6 @@
   </header>
 
   <div style="padding:0 clamp(14px,4vw,24px)">
-
-    <div data-noprint style="display:flex;justify-content:flex-end;margin:18px 0 0">
-      <button type="button" onclick="window.print()" style="display:inline-flex;align-items:center;gap:8px;background:var(--surface-card);color:var(--navy-800);border:2px solid var(--border-field);border-radius:var(--radius-pill);padding:9px 16px;font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer" data-i18n="print">הדפסה / PDF</button>
-    </div>
 
     
     <div id="home-flight-card" style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px;margin-top:14px">
@@ -1476,6 +1475,11 @@ function applyI18nDom(lang){
     var entry = UI_STRINGS[el.getAttribute('data-i18n-placeholder')];
     if(!entry) return;
     el.setAttribute('placeholder', entry[lang]);
+  });
+  [].forEach.call(document.querySelectorAll('[data-i18n-aria]'), function(el){
+    var entry = UI_STRINGS[el.getAttribute('data-i18n-aria')];
+    if(!entry) return;
+    el.setAttribute('aria-label', entry[lang]);
   });
   applyDirFlip(lang);
 }
