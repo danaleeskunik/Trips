@@ -310,6 +310,11 @@
 .home-illustration svg{display:block;width:100%;height:auto}
 .screen-illustration{margin:0 0 16px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,var(--illustration-bg-1) 0%,var(--illustration-bg-2) 100%);height:70px}
 .screen-illustration svg{display:block;width:100%;height:70px}
+.day-map-box{margin-top:14px;border-radius:10px;overflow:hidden;border:1px solid var(--border-card)}
+.day-map-box iframe{display:block;width:100%;height:150px;border:0}
+.day-map-caption{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 12px;background:var(--surface-muted);font:var(--fw-bold) var(--text-12)/1.3 var(--font-ui)}
+.day-map-caption span{color:var(--ink-6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.day-map-caption a{color:var(--blue-600);text-decoration:none;white-space:nowrap}
 </style>
 <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
@@ -328,9 +333,6 @@
     <button type="button" id="lang-switch" onclick="toggleLanguage()" role="switch" aria-checked="false" aria-label="Switch language / החלפת שפה" data-noprint style="position:absolute;top:20px;right:20px;z-index:2;display:flex;align-items:center;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);border-radius:999px;padding:3px;cursor:pointer;gap:2px">
       <span id="lang-switch-he" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:rgba(255,255,255,.28)">עב</span>
       <span id="lang-switch-en" style="padding:5px 11px;border-radius:999px;font:700 12px var(--font-ui);color:#fff;background:transparent">EN</span>
-    </button>
-    <button type="button" onclick="window.print()" data-i18n-aria="print" aria-label="הדפסה / PDF" data-noprint style="position:absolute;top:64px;right:20px;z-index:2;display:flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.5);border-radius:50%;cursor:pointer;color:#fff">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     </button>
     <div style="position:relative">
       <div data-i18n="eyebrow" style="font:var(--fw-heavy) var(--text-13-5)/1.2 var(--font-ui);letter-spacing:var(--track-eyebrow);color:var(--blue-300)">מסלול מותאם אישית</div>
@@ -1041,6 +1043,12 @@
     </div>
 
     <footer id="app-footer" data-i18n="japanFooter" style="text-align:center;margin-top:40px;font:var(--type-meta);color:var(--ink-8)">מסלול מותאם אישית · טוקיו (Tokyo) · קיוטו (Kyoto) · אוסקה (Osaka) · 2026</footer>
+    <div data-noprint style="text-align:center;margin-top:14px">
+      <button type="button" onclick="window.print()" data-dir-flip style="display:inline-flex;align-items:center;gap:6px;background:transparent;color:var(--ink-6);border:1px solid var(--border-field);border-radius:var(--radius-pill);padding:7px 14px;font:var(--fw-bold) var(--text-12-5)/1 var(--font-ui);cursor:pointer">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span data-i18n="print">הדפסה / PDF</span>
+      </button>
+    </div>
 
   </div>
 </div>
@@ -1303,6 +1311,7 @@ function applyTripDemo(key){
   if(trDirSrcVal){ var trJa = document.getElementById('tr-dir-ja'); if(trJa) trJa.textContent = trDirSrcVal; }
   var trPlaceholderVal = trField(t,'translateInputPlaceholderKo');
   if(trPlaceholderVal){ var trIn = document.getElementById('tr-input'); if(trIn) trIn.setAttribute('placeholder', trPlaceholderVal); }
+  if(typeof DAY_CITIES !== 'undefined' && DAY_CITIES[key]) renderDayMaps(DAY_CITIES[key]);
 }
 function refreshTripDemoLanguage(){
   if(typeof SCREENS === 'undefined' || typeof CITY === 'undefined') return;
@@ -1391,6 +1400,25 @@ function sbDeleteFile(path){
   return fetch(SUPABASE_URL + '/storage/v1/object/trip-documents/' + path, {method:'DELETE', headers: sbHeaders()});
 }
 var FAMILY_NAMES = {glass: 'משפחת Glass', 'glass-dror': 'משפחת Glass – דרור', chefetz: 'משפחת חפץ'};
+var DAY_CITIES = {"normandy": {"1": "Giverny, France", "2": "Rouen, France", "3": "Bayeux, France", "4": "Mont-Saint-Michel, France", "5": "Honfleur, France", "6": "Étretat, France", "7": "Pays d'Auge, France", "8": "Paris, France"}, "thailand": {"1": "Bangkok, Thailand", "4": "Chiang Mai, Thailand", "7": "Koh Samui, Thailand"}, "italy": {"1": "Rome, Italy", "3": "Florence, Italy", "5": "Siena, Italy"}, "korea": {"1": "Seoul, South Korea", "2": "Seoul, South Korea", "3": "Seoul, South Korea", "4": "Jeju, South Korea", "5": "Jeju, South Korea", "6": "Jeju, South Korea", "7": "Seoul, South Korea", "8": "Seoul, South Korea", "9": "Seoul, South Korea", "10": "Seoul, South Korea", "11": "Seoul, South Korea", "12": "Seoul, South Korea", "13": "Seoul, South Korea", "14": "Seoul, South Korea"}, "korea-dror": {"1": "Gyeongju, South Korea", "2": "Gyeongju, South Korea", "3": "Busan, South Korea", "4": "Busan, South Korea", "5": "Busan, South Korea", "6": "Jinju, South Korea", "7": "Jinju, South Korea", "8": "Seoul, South Korea", "9": "Seoul, South Korea", "10": "Seoul, South Korea", "11": "Seoul, South Korea", "12": "Seoul, South Korea"}};
+var JAPAN_DAY_CITIES = {"1": "Tokyo, Japan", "2": "Tokyo, Japan", "3": "Tokyo, Japan", "4": "Kyoto, Japan", "5": "Kyoto, Japan", "6": "Kyoto, Japan", "7": "Kyoto, Japan", "8": "Kyoto, Japan", "9": "Osaka, Japan", "10": "Tokyo, Japan", "11": "Tokyo, Japan", "12": "Tokyo, Japan", "13": "Tokyo, Japan"};
+function renderDayMaps(cityMap){
+  if(!cityMap) return;
+  [].forEach.call(document.querySelectorAll('[data-daycard]'), function(card){
+    var city = cityMap[card.getAttribute('data-daycard')];
+    var old = card.querySelector('.day-map-box');
+    if(old) old.remove();
+    if(!city) return;
+    var box = document.createElement('div');
+    box.className = 'day-map-box';
+    box.setAttribute('data-dir-flip', '');
+    var mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(city);
+    box.innerHTML = '<iframe src="https://maps.google.com/maps?q=' + encodeURIComponent(city) + '&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+      + '<div class="day-map-caption"><span>' + city + '</span><a href="' + mapsUrl + '" target="_blank" rel="noopener" data-i18n="mapsOpenButton">'
+      + (typeof CURRENT_LANG !== 'undefined' && CURRENT_LANG === 'en' ? 'Open in Maps' : 'פתיחה במפות') + '</a></div>';
+    card.appendChild(box);
+  });
+}
 var CURRENT_FAMILY = (function(){
   try{ return new URLSearchParams(window.location.search).get('family'); }catch(e){}
   return null;
@@ -2176,7 +2204,7 @@ function handlePhotoOcr(file){
   });
 }
 paintTranslateDirButtons();
-if(CURRENT_DESTINATION !== 'japan') applyTripDemo(CURRENT_DESTINATION);
+if(CURRENT_DESTINATION !== 'japan') applyTripDemo(CURRENT_DESTINATION); else renderDayMaps(JAPAN_DAY_CITIES);
 if(CURRENT_FAMILY && FAMILY_NAMES[CURRENT_FAMILY]){
   var familyBanner = document.getElementById('family-banner');
   if(familyBanner){ familyBanner.textContent = FAMILY_NAMES[CURRENT_FAMILY]; familyBanner.style.display = 'inline-block'; }
