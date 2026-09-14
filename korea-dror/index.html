@@ -320,6 +320,11 @@
 .day-map-caption{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 12px;background:var(--surface-muted);font:var(--fw-bold) var(--text-12)/1.3 var(--font-ui)}
 .day-map-caption span{color:var(--ink-6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .day-map-caption a{color:var(--blue-600);text-decoration:none;white-space:nowrap}
+.pillrow-wrap{position:relative}
+.scroll-fade{position:absolute;top:0;bottom:0;width:30px;pointer-events:none;opacity:0;transition:opacity .15s ease}
+.scroll-fade.is-visible{opacity:1}
+.scroll-fade-start{left:0;background:linear-gradient(to right, var(--surface-card), transparent)}
+.scroll-fade-end{right:0;background:linear-gradient(to left, var(--surface-card), transparent)}
 </style>
 <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
@@ -439,6 +444,7 @@
     
     <div data-noprint style="background:var(--surface-card);border:1px solid var(--border-card);border-radius:18px;box-shadow:0 2px 8px rgba(214,41,63,.06);padding:20px 22px 16px;margin-top:16px">
       <h2 data-i18n="titleDays" style="margin:0 0 16px;font:var(--type-section-title);color:var(--navy-800);text-align:center">יום אחר יום</h2>
+      <div class="pillrow-wrap">
       <div id="days-pillrow" dir="ltr" style="display:flex;gap:9px;overflow-x:auto;padding:2px 2px 12px">
         <button data-pill="1" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span data-i18n-wd="ג׳" style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ג׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">29</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
         <button data-pill="2" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span data-i18n-wd="ד׳" style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ד׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">30</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
@@ -453,6 +459,9 @@
         <button data-pill="11" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span data-i18n-wd="ו׳" style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ו׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">9</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
         <button data-pill="12" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span data-i18n-wd="ש׳" style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">ש׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">10</span><span style="width:6px;height:6px;border-radius:50%;background:#6E8FD9"></span></button>
         <button data-pill="13" onclick="selectDay(this)" style="flex:0 0 58px;height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:none;border-radius:16px;background:var(--surface-muted);cursor:pointer;font-family:var(--font-ui)"><span data-i18n-wd="א׳" style="font:var(--fw-bold) var(--text-11)/1 var(--font-ui);color:var(--ink-7)">א׳</span><span style="font:var(--fw-black) var(--text-19)/1 var(--font-num);color:var(--ink-1)">11</span><span style="width:6px;height:6px;border-radius:50%;background:#B87FC2"></span></button>
+      </div>
+      <div class="scroll-fade scroll-fade-start" aria-hidden="true"></div>
+      <div class="scroll-fade scroll-fade-end" aria-hidden="true"></div>
       </div>
       <div data-selected-label data-i18n="daysSelectPrompt" style="font:var(--fw-bold) var(--text-15)/1.5 var(--font-ui);color:var(--ink-4)">בחרו יום כדי לראות את הלו"ז שלו</div>
       <div id="days-legend" style="display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--border-hair)">
@@ -1407,6 +1416,16 @@ function sbDeleteFile(path){
 var FAMILY_NAMES = {glass: 'משפחת Glass', 'glass-dror': 'משפחת Glass – דרור', chefetz: 'משפחת חפץ'};
 var DAY_CITIES = {"normandy": {"1": "Giverny, France", "2": "Rouen, France", "3": "Bayeux, France", "4": "Mont-Saint-Michel, France", "5": "Honfleur, France", "6": "Étretat, France", "7": "Pays d'Auge, France", "8": "Paris, France"}, "thailand": {"1": "Bangkok, Thailand", "4": "Chiang Mai, Thailand", "7": "Koh Samui, Thailand"}, "italy": {"1": "Rome, Italy", "3": "Florence, Italy", "5": "Siena, Italy"}, "korea": {"1": "Seoul, South Korea", "2": "Seoul, South Korea", "3": "Seoul, South Korea", "4": "Jeju, South Korea", "5": "Jeju, South Korea", "6": "Jeju, South Korea", "7": "Seoul, South Korea", "8": "Seoul, South Korea", "9": "Seoul, South Korea", "10": "Seoul, South Korea", "11": "Seoul, South Korea", "12": "Seoul, South Korea", "13": "Seoul, South Korea", "14": "Seoul, South Korea"}, "korea-dror": {"1": "Gyeongju, South Korea", "2": "Gyeongju, South Korea", "3": "Busan, South Korea", "4": "Busan, South Korea", "5": "Busan, South Korea", "6": "Jinju, South Korea", "7": "Jinju, South Korea", "8": "Seoul, South Korea", "9": "Seoul, South Korea", "10": "Seoul, South Korea", "11": "Seoul, South Korea", "12": "Seoul, South Korea"}};
 var JAPAN_DAY_CITIES = {"1": "Tokyo, Japan", "2": "Tokyo, Japan", "3": "Tokyo, Japan", "4": "Kyoto, Japan", "5": "Kyoto, Japan", "6": "Kyoto, Japan", "7": "Kyoto, Japan", "8": "Kyoto, Japan", "9": "Osaka, Japan", "10": "Tokyo, Japan", "11": "Tokyo, Japan", "12": "Tokyo, Japan", "13": "Tokyo, Japan"};
+function updatePillrowFade(){
+  var row = document.getElementById('days-pillrow');
+  if(!row || !row.parentElement) return;
+  var startFade = row.parentElement.querySelector('.scroll-fade-start');
+  var endFade = row.parentElement.querySelector('.scroll-fade-end');
+  if(!startFade || !endFade) return;
+  var maxScroll = row.scrollWidth - row.clientWidth;
+  startFade.classList.toggle('is-visible', row.scrollLeft > 2);
+  endFade.classList.toggle('is-visible', maxScroll > 2 && row.scrollLeft < maxScroll - 2);
+}
 function renderDayMaps(cityMap){
   if(!cityMap) return;
   [].forEach.call(document.querySelectorAll('[data-daycard]'), function(card){
@@ -1458,7 +1477,7 @@ function renderCityForecast(container){
   body.textContent = trUI('weatherLoading');
   fetchCityForecast(slug).then(function(data){
     var days = data.daily.time, codes = data.daily.weather_code, hi = data.daily.temperature_2m_max, lo = data.daily.temperature_2m_min;
-    var html = '<div style="display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px">';
+    var html = '<div dir="ltr" style="display:flex;gap:8px;overflow-x:auto;padding:2px 2px 4px">';
     for(var i=0;i<days.length;i++){
       var d = new Date(days[i] + 'T00:00:00');
       var dm = d.getDate() + '.' + (d.getMonth()+1);
@@ -1555,6 +1574,14 @@ window.scrollTo(0,0);
 window.addEventListener('pageshow', function(){ window.scrollTo(0,0); });
 
 (function(){
+  var pillrow = document.getElementById('days-pillrow');
+  if(pillrow){
+    pillrow.addEventListener('scroll', updatePillrowFade, {passive:true});
+    window.addEventListener('resize', updatePillrowFade);
+  }
+})();
+
+(function(){
   var __demo = (typeof TRIP_DEMOS !== 'undefined' && typeof CURRENT_DESTINATION !== 'undefined') ? TRIP_DEMOS[CURRENT_DESTINATION] : null;
   var out = (__demo && __demo.flOutISO) ? new Date(__demo.flOutISO) : new Date('2026-09-28T19:45:00+03:00');
   var back = (__demo && __demo.flBackISO) ? new Date(__demo.flBackISO) : new Date('2026-10-11T19:55:00+09:00');
@@ -1646,6 +1673,7 @@ function showScreen(name){
   var flight=document.getElementById('home-flight-card');
   if(flight) flight.style.display='none';
   if(name === 'weather' && typeof renderWeatherForecasts === 'function') renderWeatherForecasts();
+  if(name === 'days' && typeof updatePillrowFade === 'function') updatePillrowFade();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function showHome(){
