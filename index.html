@@ -426,15 +426,15 @@
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg></span>
     <span id="translate-tile-label" class="tile-label" data-i18n="tileTranslate" style="color:#fff">מתרגם עברית-יפנית</span>
   </button>
-  <button type="button" onclick="showScreen('restaurants')" class="home-tile" style="background:var(--tile-3)">
+  <button id="tile-restaurants" type="button" onclick="showScreen('restaurants')" class="home-tile" style="background:var(--tile-3);display:none">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/><path d="M8 11v11"/><path d="M17 2c-2 0-3 2-3 5v3h3v11"/></svg></span>
     <span class="tile-label" data-i18n="tileRestaurants" style="color:#fff">מסעדות והמלצות אוכל</span>
   </button>
-  <button type="button" onclick="showScreen('attractions')" class="home-tile" style="background:var(--tile-4)">
+  <button id="tile-attractions" type="button" onclick="showScreen('attractions')" class="home-tile" style="background:var(--tile-4);display:none">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg></span>
     <span class="tile-label" data-i18n="tileAttractions" style="color:#fff">אטרקציות לסמן</span>
   </button>
-  <button type="button" onclick="showScreen('budget')" class="home-tile" style="background:var(--tile-1)">
+  <button id="tile-budget" type="button" onclick="showScreen('budget')" class="home-tile" style="background:var(--tile-1);display:none">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="17" cy="15" r="1.5"/></svg></span>
     <span class="tile-label" data-i18n="tileBudget" style="color:#fff">מעקב תקציב</span>
   </button>
@@ -1329,6 +1329,14 @@ function applyTripDemo(key){
   setHtml('attractions-list', trField(t,'attractionsHtml'));
   setHtml('budget-content', trField(t,'budgetHtml'));
   if(typeof restoreAttr === 'function') restoreAttr();
+  /* these 3 home tiles default to display:none in the static markup (see
+     tile-restaurants/tile-attractions/tile-budget) so a destination with no
+     content for them — every destination but the one we're actively filling
+     in — keeps its home screen exactly as it was before these existed. */
+  var setTileVisible = function(id, val){ var el = document.getElementById(id); if(el) el.style.display = val ? '' : 'none'; };
+  setTileVisible('tile-restaurants', trField(t,'restaurantsHtml'));
+  setTileVisible('tile-attractions', trField(t,'attractionsHtml'));
+  setTileVisible('tile-budget', trField(t,'budgetHtml'));
   /* the blocks above just wrote fresh innerHTML that can itself contain data-i18n
      (e.g. appsCatTransport inside appsHtml) or data-dir-flip (e.g. the Back to Menu
      button inside daysContent) — walk the DOM now so those pick up the current
