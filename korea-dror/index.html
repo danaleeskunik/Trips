@@ -391,9 +391,13 @@
       <div id="hero-booking-ref"><div dir="ltr" title="מוסתר לצורך הדגמה" style="display:inline-block;margin-top:14px;background:var(--surface-muted);color:var(--ink-6);border-radius:var(--radius-pill);padding:4px 10px;font:var(--fw-bold) var(--text-12)/1.2 var(--font-ui);filter:blur(4px);user-select:none">Booking ref: 9KP4R2</div></div>
     </div>
     <div class="home-nav">
-  <button type="button" onclick="showScreen('days')" class="home-tile" style="background:var(--tile-1)">
-    <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span>
-    <span class="tile-label" data-i18n="tileDays" style="color:#fff">יום אחר יום</span>
+  <button type="button" id="tile-days-featured" onclick="handleDaysTileClick()" class="home-tile" data-dir-flip style="grid-column:1/-1;background:var(--tile-1);filter:brightness(.82) saturate(1.08);flex-direction:row;align-items:center;justify-content:flex-start;text-align:start;gap:14px;padding:16px 20px">
+    <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff;flex-shrink:0;width:44px;height:44px"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></span>
+    <span style="flex:1;min-width:0;text-align:start">
+      <span id="days-tile-title" class="tile-label" data-i18n="tileDays" style="color:#fff;display:block;text-align:start;min-height:0">יום אחר יום</span>
+      <span id="days-tile-sub" style="display:none;color:rgba(255,255,255,.85);font:var(--fw-medium) var(--text-12-5)/1.4 var(--font-ui);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+    </span>
+    <span id="days-tile-arrow" style="color:#fff;opacity:.8;font:var(--fw-black) var(--text-19)/1 var(--font-ui);flex-shrink:0">←</span>
   </button>
   <button type="button" onclick="showScreen('converter')" class="home-tile" style="background:var(--tile-2)">
     <span class="tile-icon" style="background:rgba(255,255,255,.24);color:#fff"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="17,3 21,7 17,11"/><line x1="21" y1="7" x2="7" y2="7"/><polyline points="7,13 3,17 7,21"/><line x1="3" y1="17" x2="17" y2="17"/></svg></span>
@@ -1360,6 +1364,7 @@ function applyTripDemo(key){
   setTileVisible('tile-restaurants', trField(t,'restaurantsHtml'));
   setTileVisible('tile-attractions', trField(t,'attractionsHtml'));
   setTileVisible('tile-budget', t.budgetEnabled);
+  if(typeof updateDaysFeaturedTile === 'function') updateDaysFeaturedTile();
   /* the blocks above just wrote fresh innerHTML that can itself contain data-i18n
      (e.g. appsCatTransport inside appsHtml) or data-dir-flip (e.g. the Back to Menu
      button inside daysContent) — walk the DOM now so those pick up the current
@@ -1495,6 +1500,60 @@ function updatePillrowFade(){
   startFade.classList.toggle('is-visible', row.scrollLeft > 2);
   endFade.classList.toggle('is-visible', maxScroll > 2 && row.scrollLeft < maxScroll - 2);
 }
+function getCurrentTripDayNumber(){
+  try{
+    var demo = (typeof TRIP_DEMOS !== 'undefined' && typeof CURRENT_DESTINATION !== 'undefined') ? TRIP_DEMOS[CURRENT_DESTINATION] : null;
+    var outISO = (demo && demo.flOutISO) ? demo.flOutISO : '2026-09-28T19:45:00+03:00';
+    var backISO = (demo && demo.flBackISO) ? demo.flBackISO : '2026-10-11T19:55:00+09:00';
+    var out = new Date(outISO), back = new Date(backISO), now = new Date();
+    if(isNaN(out.getTime()) || isNaN(back.getTime())) return null;
+    if(now < out || now > back) return null;
+    var outMid = new Date(out.getFullYear(), out.getMonth(), out.getDate());
+    var nowMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var n = Math.floor((nowMid - outMid) / 86400000) + 1;
+    var total = document.querySelectorAll('[data-daycard]').length;
+    if(n < 1) n = 1;
+    if(total && n > total) n = total;
+    return n;
+  }catch(e){ return null; }
+}
+function updateDaysFeaturedTile(){
+  var titleEl = document.getElementById('days-tile-title');
+  var subEl = document.getElementById('days-tile-sub');
+  var arrowEl = document.getElementById('days-tile-arrow');
+  if(!titleEl) return;
+  var isEn = typeof CURRENT_LANG !== 'undefined' && CURRENT_LANG === 'en';
+  if(arrowEl) arrowEl.textContent = isEn ? '→' : '←';
+  var n = getCurrentTripDayNumber();
+  if(!n){
+    titleEl.textContent = (typeof UI_STRINGS !== 'undefined' && UI_STRINGS.tileDays) ? UI_STRINGS.tileDays[CURRENT_LANG] : 'יום אחר יום';
+    if(subEl){ subEl.style.display = 'none'; subEl.textContent = ''; }
+    return;
+  }
+  var total = document.querySelectorAll('[data-daycard]').length;
+  var card = document.querySelector('[data-daycard="'+n+'"]');
+  var dayTitle = '';
+  if(card){
+    var h3 = card.querySelector('h3');
+    if(h3) dayTitle = h3.textContent.replace(/^(?:יום|Day)\s*\d+\s*[·\-–]?\s*/i, '');
+  }
+  titleEl.textContent = isEn ? ('Day ' + n + ' of ' + total) : ('יום ' + n + ' מתוך ' + total);
+  if(subEl){
+    subEl.textContent = dayTitle;
+    subEl.style.display = dayTitle ? 'block' : 'none';
+  }
+}
+function handleDaysTileClick(){
+  var n = getCurrentTripDayNumber();
+  showScreen('days');
+  if(n){
+    var pillBtn = document.querySelector('[data-pill="'+n+'"]');
+    if(pillBtn && typeof selectDay === 'function'){
+      selectDay(pillBtn);
+      if(typeof updatePillrowFade === 'function') updatePillrowFade();
+    }
+  }
+}
 function renderDayMaps(cityMap){
   if(!cityMap) return;
   [].forEach.call(document.querySelectorAll('[data-daycard]'), function(card){
@@ -1624,6 +1683,7 @@ function applyLanguage(lang){
   if(typeof CURRENT_DESTINATION !== 'undefined' && CURRENT_DESTINATION === 'japan'){
     document.title = (isEn ? 'Japan Trip Itinerary' : 'מסלול טיול יפן') + ' 2026';
   }
+  if(typeof updateDaysFeaturedTile === 'function') updateDaysFeaturedTile();
 }
 function toggleLanguage(){
   applyLanguage(CURRENT_LANG === 'he' ? 'en' : 'he');
@@ -2394,7 +2454,7 @@ function handlePhotoOcr(file){
   });
 }
 paintTranslateDirButtons();
-if(CURRENT_DESTINATION !== 'japan') applyTripDemo(CURRENT_DESTINATION); else renderDayMaps(JAPAN_DAY_CITIES);
+if(CURRENT_DESTINATION !== 'japan') applyTripDemo(CURRENT_DESTINATION); else { renderDayMaps(JAPAN_DAY_CITIES); updateDaysFeaturedTile(); }
 if(CURRENT_FAMILY && FAMILY_NAMES[CURRENT_FAMILY]){
   var familyBanner = document.getElementById('family-banner');
   if(familyBanner){ familyBanner.textContent = FAMILY_NAMES[CURRENT_FAMILY]; familyBanner.style.display = 'inline-block'; }
