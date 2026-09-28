@@ -1308,10 +1308,33 @@ function applyDestinationTheme(key){
   root.setProperty('--hero-gradient', 'radial-gradient(120% 130% at 85% 0%, '+dest.navy700+' 0%, '+dest.navy800+' 60%, '+dest.navy900+' 100%)');
   var themeMeta = document.querySelector('meta[name="theme-color"]');
   if(themeMeta) themeMeta.setAttribute('content', dest.navy800);
+  /* every destination gets its own tab/home-screen icon: the head ships Japan's flag as the default, so a
+     destination without icon180/icon512 must NOT keep it. makeDestIcon() draws one from the destination's
+     own stamp + theme colors on a canvas (rule documented in .claude/agents/dev.md). */
+  function makeDestIcon(size, bleed){
+    try{
+      var cv=document.createElement('canvas'); cv.width=size; cv.height=size;
+      var g=cv.getContext('2d'), r=bleed?0:size*0.22;
+      g.beginPath(); g.moveTo(r,0); g.arcTo(size,0,size,size,r); g.arcTo(size,size,0,size,r); g.arcTo(0,size,0,0,r); g.arcTo(0,0,size,0,r); g.closePath();
+      var grad=g.createLinearGradient(0,0,0,size); grad.addColorStop(0,dest.navy700); grad.addColorStop(1,dest.navy900);
+      g.fillStyle=grad; g.fill();
+      var t=String(dest.stamp||dest.name||'').slice(0,4);
+      g.fillStyle='#fff'; g.textAlign='center'; g.textBaseline='middle';
+      g.font='800 '+Math.round(size*(t.length>2?0.34:0.46))+'px Heebo, Arial, sans-serif';
+      g.fillText(t,size/2,size/2+size*0.03);
+      return cv.toDataURL('image/png');
+    }catch(e){ return null; }
+  }
   var appleIcon = document.getElementById('apple-icon-link');
-  if(appleIcon && dest.icon180) appleIcon.setAttribute('href', dest.icon180);
   var favicon = document.getElementById('favicon-link');
-  if(favicon && dest.icon512) favicon.setAttribute('href', dest.icon512);
+  if(appleIcon){
+    if(dest.icon180) appleIcon.setAttribute('href', dest.icon180);
+    else { var ai=makeDestIcon(180,true); if(ai) appleIcon.setAttribute('href', ai); }
+  }
+  if(favicon){
+    if(dest.icon512) favicon.setAttribute('href', dest.icon512);
+    else { var fi=makeDestIcon(128,false); if(fi) favicon.setAttribute('href', fi); }
+  }
   [].forEach.call(document.querySelectorAll('#dest-stamp-text, #doc-stamp-text'), function(el){
     el.textContent = dest.stamp;
   });
