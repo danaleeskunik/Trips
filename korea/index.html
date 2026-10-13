@@ -326,10 +326,6 @@
 .scroll-fade-start{left:0;background:linear-gradient(to right, var(--surface-card), transparent)}
 .scroll-fade-end{right:0;background:linear-gradient(to left, var(--surface-card), transparent)}
 </style>
-<script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/kuroshiro@1.1.2/dist/kuroshiro.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
 </head>
 <body>
 
@@ -1071,6 +1067,11 @@
         <div data-i18n="translateOutputLabel" style="font:var(--fw-heavy) var(--text-13)/1.2 var(--font-ui);color:var(--ink-7);margin-bottom:6px">תרגום:</div>
         <div id="tr-output" dir="auto" style="font:var(--fw-bold) var(--text-17)/1.5 var(--font-ui);color:var(--navy-800);min-height:28px"></div>
         <div id="tr-romaji" dir="ltr" style="margin-top:6px;font:var(--fw-medium) var(--text-14)/1.4 var(--font-num);color:var(--ink-6)"></div>
+                <div id="tr-alts" dir="auto" style="margin-top:8px;font:var(--fw-medium) var(--text-13-5)/1.5 var(--font-ui);color:var(--ink-6)"></div>
+        <div id="tr-speak" data-dir-flip style="display:none;gap:8px;flex-wrap:wrap;margin-top:12px">
+          <button type="button" onclick="speakText(0.9)" style="display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 16px;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>השמעה</button>
+          <button type="button" onclick="speakText(0.55)" style="display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 16px;background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13-5)/1 var(--font-ui);cursor:pointer">השמעה לאט</button>
+        </div>
         <a id="tr-gt-link" href="#" target="_blank" rel="noopener" style="display:none;margin-top:10px;align-items:center;gap:6px;min-height:36px;padding:8px 14px;background:var(--blue-100);color:var(--blue-600);border-radius:var(--radius-pill);font:var(--fw-bold) var(--text-13)/1 var(--font-ui);text-decoration:none">בדיקה ב-Google Translate</a>
       </div>
       <p data-i18n="translateTip" style="margin:16px 0 0;font:var(--fw-medium) var(--text-12-5)/1.5 var(--font-ui);color:var(--ink-8)">טיפ: זיהוי טקסט מתמונה עובד הכי טוב על כתב ברור וישר, ודורש חיבור לאינטרנט. אפשר לתקן את הטקסט שזוהה בתיבה למעלה לפני התרגום. לתרגום מדויק יותר אפשר גם להעתיק את הטקסט ל-Google Translate (במסך "אפליקציות שימושיות").</p>
@@ -2502,53 +2503,9 @@ function setTranslateDirection(dir){
   translateDirection=dir;
   paintTranslateDirButtons();
 }
-var kuroshiroInstance=null, kuroshiroInitPromise=null;
 var translateBusy=false, ocrBusy=false;
-function getKuroshiro(){
-  if(kuroshiroInitPromise) return kuroshiroInitPromise;
-  kuroshiroInitPromise=new Promise(function(resolve,reject){
-    if(typeof Kuroshiro==='undefined'||typeof KuromojiAnalyzer==='undefined'){
-      reject(new Error('kuroshiro not loaded'));
-      return;
-    }
-    var k=new Kuroshiro();
-    k.init(new KuromojiAnalyzer({dictPath:'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/'})).then(function(){
-      kuroshiroInstance=k;
-      resolve(k);
-    }).catch(reject);
-  });
-  /* a failed/slow load must not poison later attempts */
-  kuroshiroInitPromise.catch(function(){ kuroshiroInitPromise=null; });
-  return kuroshiroInitPromise;
-}
-/* The romaji dictionary is ~17MB and is parsed on the main thread, which can freeze a phone for many seconds.
-   So it is NEVER loaded automatically after a translation - only when the user taps the button below. */
-function offerRomaji(japaneseText){
-  var romajiEl=document.getElementById('tr-romaji');
-  if(!romajiEl) return;
-  romajiEl.innerHTML='';
-  if(!japaneseText || japaneseText.length>300) return;
-  var b=document.createElement('button');
-  b.type='button';
-  b.textContent='הצגת הגייה בלועזית';
-  b.style.cssText='background:var(--surface-muted);color:var(--navy-800);border:none;border-radius:var(--radius-pill);padding:8px 14px;font:var(--fw-bold) var(--text-13)/1 var(--font-ui);cursor:pointer;min-height:36px';
-  b.onclick=function(){ showRomaji(japaneseText); };
-  romajiEl.appendChild(b);
-}
-function showRomaji(japaneseText){
-  var romajiEl=document.getElementById('tr-romaji');
-  if(!romajiEl) return;
-  if(!japaneseText){romajiEl.textContent='';return;}
-  romajiEl.textContent = kuroshiroInstance ? '' : 'טוען מילון הגייה (כ-17MB, רק בפעם הראשונה)...';
-  var limit=new Promise(function(_,rej){ setTimeout(function(){ rej(new Error('timeout')); }, 60000); });
-  Promise.race([getKuroshiro(), limit]).then(function(k){
-    return k.convert(japaneseText,{to:'romaji',mode:'spaced'});
-  }).then(function(romaji){
-    romajiEl.textContent = romaji ? 'הגייה: '+romaji : '';
-  }).catch(function(){
-    romajiEl.textContent='לא הצלחתי לטעון את ההגייה כרגע.';
-  });
-}
+var TTS_LANG={ja:'ja-JP',ko:'ko-KR',th:'th-TH',it:'it-IT',fr:'fr-FR',sq:'sq-AL',he:'he-IL'};
+var lastSpeak={text:'',lang:''};
 function fetchWithTimeout(url, ms){
   return new Promise(function(resolve,reject){
     var done=false, ctl=(typeof AbortController!=='undefined') ? new AbortController() : null;
@@ -2576,25 +2533,31 @@ function splitForTranslate(text, max){
   return out;
 }
 function gtLang(c){ return c==='he' ? 'iw' : c; }
-/* Primary: Google's free web translation endpoint (much better quality). Fallback: MyMemory, whose free
-   corpus sometimes returns wrong phrases for very short inputs - hence the "check in Google Translate" link. */
+/* Primary: Google's free web translation endpoint (much better quality; also returns the pronunciation in Latin letters and,
+   for single words, alternative meanings). Fallback: MyMemory, whose free corpus sometimes returns wrong phrases for very
+   short inputs - hence the "check in Google Translate" link. No heavy libraries are loaded for any of this. */
 function translateChunk(chunk, langpair){
   var sl=langpair.split('|')[0], tl=langpair.split('|')[1];
-  var gUrl='https://translate.googleapis.com/translate_a/single?client=gtx&sl='+gtLang(sl)+'&tl='+gtLang(tl)+'&dt=t&q='+encodeURIComponent(chunk);
+  var gUrl='https://translate.googleapis.com/translate_a/single?client=gtx&sl='+gtLang(sl)+'&tl='+gtLang(tl)+'&dt=t&dt=bd&dt=rm&q='+encodeURIComponent(chunk);
   return fetchWithTimeout(gUrl, 8000).then(function(r){
     if(!r.ok) throw new Error('gtx');
     return r.json();
   }).then(function(d){
-    var t=(d&&d[0]) ? d[0].map(function(x){return x&&x[0]?x[0]:'';}).join('') : '';
+    var items=(d&&d[0]) ? d[0] : [];
+    var t=items.map(function(x){return x&&x[0]?x[0]:'';}).join('');
     if(!t) throw new Error('gtx');
-    return t;
+    var tr=items.filter(function(x){return x && !x[0] && (x[2]||x[3]);})[0];
+    var rm = tr ? (tl==='he' ? (tr[3]||'') : (tr[2]||'')) : '';
+    var alts=[];
+    if(d && d[1]) d[1].forEach(function(g){ (g[1]||[]).forEach(function(w){ if(w && alts.indexOf(w)<0 && w!==t) alts.push(w); }); });
+    return {t:t, rm:rm, alts:alts.slice(0,6)};
   }).catch(function(){
     return fetchWithTimeout('https://api.mymemory.translated.net/get?q='+encodeURIComponent(chunk)+'&langpair='+langpair, 12000)
       .then(function(r){return r.json();})
       .then(function(d){
         var t = d && d.responseData && d.responseData.translatedText;
         if(!t || /MYMEMORY WARNING|QUERY LENGTH LIMIT|INVALID/i.test(t)) throw new Error('quota');
-        return t;
+        return {t:t, rm:'', alts:[]};
       });
   });
 }
@@ -2604,12 +2567,33 @@ function setGoogleTranslateLink(text){
   a.href='https://translate.google.com/?sl='+src+'&tl='+dst+'&text='+encodeURIComponent(text)+'&op=translate';
   a.style.display='inline-flex';
 }
+/* text-to-speech: plays the translated text in the target language (Japanese when translating from Hebrew) */
+function speakText(rate){
+  var st=document.getElementById('tr-status');
+  if(!lastSpeak.text) return;
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance==='undefined'){
+    if(st) st.textContent='ההשמעה לא נתמכת בדפדפן הזה.';
+    return;
+  }
+  try{
+    if(st) st.textContent='';
+    var ss=window.speechSynthesis;
+    ss.cancel();
+    var u=new SpeechSynthesisUtterance(lastSpeak.text);
+    u.lang=lastSpeak.lang; u.rate=rate||0.9;
+    var pre=lastSpeak.lang.slice(0,2).toLowerCase();
+    var v=(ss.getVoices()||[]).filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(pre)===0; })[0];
+    if(v) u.voice=v;
+    else if(st) st.textContent='לא נמצא במכשיר קול מתאים לשפה הזו, ההשמעה עשויה להישמע לא טוב.';
+    ss.speak(u);
+  }catch(e){ if(st) st.textContent='ההשמעה נכשלה.'; }
+}
 function translateText(){
   var inputEl=document.getElementById('tr-input'), outEl=document.getElementById('tr-output');
   if(!inputEl||!outEl) return;
   var text=inputEl.value.trim();
-  var romajiEl=document.getElementById('tr-romaji');
-  if(!text){outEl.textContent='';if(romajiEl)romajiEl.textContent='';return;}
+  var romajiEl=document.getElementById('tr-romaji'), altsEl=document.getElementById('tr-alts'), speakEl=document.getElementById('tr-speak');
+  if(!text){outEl.textContent='';if(romajiEl)romajiEl.textContent='';if(altsEl)altsEl.textContent='';if(speakEl)speakEl.style.display='none';return;}
   if(translateBusy) return;
   translateBusy=true;
   var goBtn=document.getElementById('tr-go-btn');
@@ -2617,28 +2601,50 @@ function translateText(){
   outEl.textContent='מתרגם...';
   var __gt=document.getElementById('tr-gt-link'); if(__gt) __gt.style.display='none';
   if(romajiEl) romajiEl.textContent='';
+  if(altsEl) altsEl.textContent='';
+  if(speakEl) speakEl.style.display='none';
   var __lang = currentTranslateLang();
   var langpair = translateDirection==='ja-he' ? (__lang.code+'|he') : ('he|'+__lang.code);
   var chunks = splitForTranslate(text, 400).slice(0, 12);
   var results = [];
   chunks.reduce(function(p, ch){
-    return p.then(function(){ return translateChunk(ch, langpair).then(function(t){ results.push(t); }); });
+    return p.then(function(){ return translateChunk(ch, langpair).then(function(r){ results.push(r); }); });
   }, Promise.resolve()).then(function(){
-    var t = results.join('\n');
+    var t = results.map(function(r){return r.t;}).join('\n');
     outEl.textContent = t;
     setGoogleTranslateLink(text);
-    if(__lang.romanize){
-      offerRomaji(translateDirection==='he-ja' ? t : text);
-    }
+    var rm = results.map(function(r){return r.rm;}).filter(Boolean).join(' / ');
+    if(romajiEl && rm) romajiEl.textContent = 'הגייה: '+rm;
+    if(altsEl && results.length===1 && results[0].alts.length>1) altsEl.textContent = 'אפשרויות נוספות: '+results[0].alts.join(', ');
+    var speakCode = translateDirection==='ja-he' ? 'he' : __lang.code;
+    lastSpeak = {text:t, lang:TTS_LANG[speakCode]||speakCode};
+    if(speakEl) speakEl.style.display='flex';
   }).catch(function(e){
     var msg = e && e.message;
     outEl.textContent = (msg==='timeout')
       ? 'התרגום לוקח יותר מדי זמן — אפשר לנסות שוב, או להעתיק את הטקסט ל-Google Translate.'
       : (msg==='quota' ? 'לא הצלחתי לתרגם כרגע — אפשר לנסות שוב, או להעתיק את הטקסט ל-Google Translate.' : 'שגיאה בתרגום — יש לבדוק חיבור לאינטרנט.');
+    setGoogleTranslateLink(text);
   }).then(function(){
     translateBusy=false;
     if(goBtn) goBtn.disabled=false;
   });
+}
+/* the OCR library is only fetched when the photo button is used - it is not loaded with the page */
+var tesseractPromise=null;
+function loadTesseract(){
+  if(typeof Tesseract!=='undefined') return Promise.resolve();
+  if(tesseractPromise) return tesseractPromise;
+  tesseractPromise=new Promise(function(resolve,reject){
+    var s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    var t=setTimeout(function(){ reject(new Error('timeout')); }, 20000);
+    s.onload=function(){ clearTimeout(t); resolve(); };
+    s.onerror=function(){ clearTimeout(t); reject(new Error('load')); };
+    document.head.appendChild(s);
+  });
+  tesseractPromise.catch(function(){ tesseractPromise=null; });
+  return tesseractPromise;
 }
 /* Phone camera photos are 12MP+; feeding them to OCR as-is can exhaust memory and freeze/crash the page. */
 function downscaleImageFile(file, maxDim){
@@ -2663,10 +2669,6 @@ function handlePhotoOcr(file){
   var fileInput=document.getElementById('tr-photo-input');
   if(ocrBusy) return;
   setTranslateDirection('ja-he');
-  if(typeof Tesseract==='undefined'){
-    statusEl.textContent='זיהוי תמונה דורש חיבור לאינטרנט בטעינה הראשונה. יש לבדוק חיבור ולנסות שוב.';
-    return;
-  }
   ocrBusy=true;
   var finished=false, timer;
   function finish(msg){
@@ -2678,9 +2680,13 @@ function handlePhotoOcr(file){
   timer=setTimeout(function(){
     finish('זיהוי הטקסט לוקח יותר מדי זמן. אפשר לנסות שוב עם תמונה קרובה וברורה יותר, או להקליד ידנית.');
   }, 120000);
-  statusEl.textContent='מכין את התמונה...';
-  downscaleImageFile(file, 1600).then(function(img){
+  statusEl.textContent='טוען רכיב זיהוי טקסט...';
+  loadTesseract().then(function(){
     if(finished) return null;
+    statusEl.textContent='מכין את התמונה...';
+    return downscaleImageFile(file, 1600);
+  }).then(function(img){
+    if(finished || !img) return null;
     statusEl.textContent='מזהה טקסט מהתמונה... בפעם הראשונה מורידים חבילת שפה (כ-15MB), זה יכול לקחת זמן.';
     return Tesseract.recognize(img, currentTranslateLang().tesseract, {logger:function(m){
       if(finished) return;
@@ -2692,8 +2698,8 @@ function handlePhotoOcr(file){
     document.getElementById('tr-input').value=text;
     finish(text ? '' : 'לא זוהה טקסט בתמונה — אפשר לנסות שוב או להקליד ידנית.');
     if(text) translateText();
-  }).catch(function(){
-    finish('שגיאה בזיהוי הטקסט. יש לוודא חיבור לאינטרנט ולנסות שוב.');
+  }).catch(function(e){
+    finish((e&&(e.message==='timeout'||e.message==='load')) ? 'זיהוי תמונה דורש חיבור לאינטרנט בטעינה הראשונה. יש לבדוק חיבור ולנסות שוב.' : 'שגיאה בזיהוי הטקסט. יש לוודא חיבור לאינטרנט ולנסות שוב.');
   });
 }
 paintTranslateDirButtons();
