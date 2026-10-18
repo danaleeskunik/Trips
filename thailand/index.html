@@ -1902,7 +1902,7 @@ function updateDayMarker(sel){
     var L=path.getTotalLength();
     if(!L) return;
     var pt=path.getPointAtLength(f*L);
-    m.style.transform='translate('+(pt.x-20)+'px,'+(pt.y-68)+'px)';
+    m.style.transform='translate('+(pt.x-20)+'px,'+(Math.max(17,pt.y-28)-40)+'px)';
   }catch(e){}
 }
 function paintPills(sel){
